@@ -1,8 +1,8 @@
-FROM node:16 AS buildStage
+FROM node:16.14.0 AS buildStage
 LABEL author="Umar Adamu Jere"
 WORKDIR /app
 COPY package.json .
-RUN npm i
+RUN npm install
 COPY . .
 RUN npm run build
 
