@@ -39,19 +39,19 @@ services:
         - ujere_net        
   user:
     restart: always
-    build: /user
+    build: ./user
     labels:
       - traefik.port=3000
       - traefik.enable=true
       - traefik.docker.network=ujere_net
     depends_on:
       - database  
-    container_name: 'user'
+    container_name: 'userAuth'
     networks:
         - ujere_net   
   form:
     restart: always
-    build: /forms
+    build: ./forms
     labels:
       - traefik.port=3000
       - traefik.enable=true
