@@ -2,9 +2,9 @@ FROM node:16.14.0 AS buildStage
 LABEL author="Umar Adamu Jere"
 WORKDIR /app
 COPY package.json .
-RUN npm install
+RUN yarn
 COPY . .
-RUN npm run build
+RUN yarn build
 
 FROM node:14-alpine
 WORKDIR /app
