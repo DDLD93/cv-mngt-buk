@@ -39,8 +39,7 @@ services:
         - ujere_net        
   user:
     restart: always
-    build: ./user
-    context: ./user
+    build: /user
     labels:
       - traefik.port=3000
       - traefik.enable=true
@@ -52,8 +51,7 @@ services:
         - ujere_net   
   form:
     restart: always
-    build: ./forms
-    context: ./forms
+    build: /forms
     labels:
       - traefik.port=3000
       - traefik.enable=true
