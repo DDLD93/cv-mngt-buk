@@ -12,7 +12,6 @@ const port = process.env.PORT || 3000
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
-//intitializing body parser
 app.use(express.json({limit: '50mb'}))
 // connecting to databas
 
