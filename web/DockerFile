@@ -2,7 +2,7 @@ FROM node:14-alpine AS buildStage
 LABEL author="Umar Adamu Jere"
 WORKDIR /app
 COPY package.json .
-RUN npm run build
+RUN npm i
 COPY . .
 RUN npm run build
 
