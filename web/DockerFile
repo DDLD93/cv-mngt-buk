@@ -11,4 +11,4 @@ WORKDIR /app
 RUN npm init -y && npm i express
 COPY --from=buildStage app/build /build
 COPY server.js .
-CMD [ "node", "server" ]
+CMD [ "node", "server"]
