@@ -1,0 +1,9 @@
+FROM node:14-alpine
+LABEL author="Umar Adamu Jere"
+WORKDIR /app
+RUN npm run build
+RUN npm init -y && npm i express
+COPY build .
+COPY server.js .
+EXPOSE 3000
+CMD ["npm", "start"]
