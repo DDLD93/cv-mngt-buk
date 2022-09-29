@@ -1,9 +1,13 @@
-FROM node:14-alpine
+FROM node:14-alpine AS buildStage
 LABEL author="Umar Adamu Jere"
 WORKDIR /app
+COPY pakage.json .
+COPY . .
 RUN npm run build
+
+FROM node:14-alpine
+WORKDIR /app
 RUN npm init -y && npm i express
-COPY build .
+COPY --from=buildStage app/build /build
 COPY server.js .
-EXPOSE 3000
-CMD ["npm", "start"]
+CMD [ "node", "server" ]
