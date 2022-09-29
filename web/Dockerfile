@@ -1,4 +1,4 @@
-FROM node:14-alpine AS buildStage
+FROM node:16 AS buildStage
 LABEL author="Umar Adamu Jere"
 WORKDIR /app
 COPY package.json .
