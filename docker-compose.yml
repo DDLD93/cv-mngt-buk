@@ -40,6 +40,7 @@ services:
   user:
     restart: always
     build: ./user
+    context: ./user
     labels:
       - traefik.port=3000
       - traefik.enable=true
@@ -52,6 +53,7 @@ services:
   form:
     restart: always
     build: ./forms
+    context: ./forms
     labels:
       - traefik.port=3000
       - traefik.enable=true
