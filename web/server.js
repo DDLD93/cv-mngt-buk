@@ -10,3 +10,7 @@ app.use(express.static(path.join(__dirname, 'build'))); //
 app.use(function(req, res, next){
     res.status(404).sendFile(path.join(__dirname, 'build', 'index.html'));
   });
+  
+app.listen(3000,()=>{
+  console.log("server runnunig on port 3000")
+})
