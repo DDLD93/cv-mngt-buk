@@ -65,8 +65,8 @@ services:
      - ${PWD}/uploads:/app/uploads  
     container_name: 'forms'
     environment:
-      - PORT: "${PORT}"
-      - MONGODB_HOST: "${MONGODB_HOST}"
+      PORT: "${PORT}"
+      MONGODB_HOST: "${MONGODB_HOST}"
     networks:
         - ujere_net    
   web:
