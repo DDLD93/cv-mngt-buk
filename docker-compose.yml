@@ -47,6 +47,9 @@ services:
     depends_on:
       - database  
     container_name: 'userAuth'
+    environment:
+      - PORT: "${PORT}"
+      - MONGODB_HOST: "${MONGODB_HOST}"
     networks:
         - ujere_net   
   form:
@@ -61,6 +64,9 @@ services:
     volumes:
      - ${PWD}/uploads:/app/uploads  
     container_name: 'forms'
+    environment:
+      - PORT: "${PORT}"
+      - MONGODB_HOST: "${MONGODB_HOST}"
     networks:
         - ujere_net    
   web:
