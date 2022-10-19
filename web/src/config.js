@@ -1,4 +1,4 @@
 module.exports = {
-    userEndPoint:"http://user:3000",
-    formEndPoint:"http://form:3000"
+    userEndPoint:"https://user.ddld.info",
+    formEndPoint:"https://form.ddld.info"
 }
