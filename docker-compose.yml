@@ -48,8 +48,8 @@ services:
       - database  
     container_name: 'userAuth'
     environment:
-      - PORT: "${PORT}"
-      - MONGODB_HOST: "${MONGODB_HOST}"
+      PORT: "${PORT}"
+      MONGODB_HOST: "${MONGODB_HOST}"
     networks:
         - ujere_net   
   form:
