@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { useSnackbar } from 'notistack';
+import config from "../config";
 
 export const StateContext = createContext();
 
@@ -36,7 +37,7 @@ export default function StateContextProvider({ children }) {
     formData.append("meta",JSON.stringify(formPostData?.data)) 
     console.log(formPostData?.data)
     setLoading(true);
-    const response = await fetch(`http://localhost:9000/api/v1/forms/`, {
+    const response = await fetch(`${config.formEndPoint}/api/v1/forms/`, {
       method: "POST",
       body: formData
     });
@@ -53,7 +54,7 @@ export default function StateContextProvider({ children }) {
   }
   async function postData(url = "") {
     setLoading(true);
-    const response = await fetch(`http://localhost:9000/api/v1/forms/${formPostData?.id}`, {
+    const response = await fetch(`${config.formEndPoint}/api/v1/forms/${formPostData?.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +66,7 @@ export default function StateContextProvider({ children }) {
   }
   const login = (data) => {
     setLoading(true)
-    fetch("http://localhost:7000/api/v1/user/login", {
+    fetch(`${config.userEndPoint}/api/v1/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

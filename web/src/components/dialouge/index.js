@@ -156,7 +156,7 @@ export function ScrollDialog(prop) {
   const { user, notification } = useContext(StateContext);
   const reviewForm = () => {
     setloading(true);
-    fetch(`http://localhost:5000/forms/approve/${prop.email}`)
+    fetch(`${config.formEndPoint}/api/v1/forms/approve/${prop.userId}`)
       .then((res) => res.json())
       .then((data) => {
         data.status == "success"
