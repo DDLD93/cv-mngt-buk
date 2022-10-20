@@ -54,6 +54,19 @@ module.exports = (express, UPLOADS) => {
     }
   });
 
+  api.put("/reject/:id", async (req, res) => {
+    let { id } = req.params;
+    let body = req.body;
+    body.updatedAt = Date.now()
+    delete body.createdAt;
+    let status = await FormCtrl.updateForm(id, {status:"declined"})
+    if (status.ok) {
+      res.status(200).json(status.Form);
+    } else {
+      res.status(500).json(status.error);
+    }
+  });
+
   api.put("/approve/:id", async (req, res) => {
     let { id } = req.params;
     let body = req.body;
