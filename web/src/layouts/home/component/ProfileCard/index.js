@@ -35,7 +35,7 @@ import Transactions from "layouts/document/components/Transactions";
 import DocumentLogs from "../Logs";
 import MDBadge from "components/MDBadge";
 
-function ProfileCard() {
+function ProfileCard({name,email,gender,phone,faculty,department,staffAdmin}) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
@@ -44,13 +44,16 @@ function ProfileCard() {
       <MDBox pt={2} px={2} mb={2} display="flex" justifyContent="space-between" alignItems="center">
         <MDBox display="flex" flexDirection="column" >
           <MDTypography sx={{ fontSize: "13px" }} variant="button" fontWeight="medium" gutterBottom>
-            {`UMAR ADAMU JERE ${`staff`}`}
+            {`Welcome Back, ${name}`}
           </MDTypography>
           <MDTypography sx={{ fontSize: "12px" }} variant="caption" color="text" fontWeight="regular">
-            {"umar.jere@gmail.com"}
+            {email}
           </MDTypography>
         </MDBox>
-        <MDButton variant="gradient" color="dark">
+        <MDButton
+        onClick={()=>window.location.replace("/document")}
+         variant="gradient" 
+         color="dark">
           <Icon sx={{ fontWeight: "bold" }}>add</Icon>
           &nbsp;modify document
         </MDButton>
@@ -62,45 +65,45 @@ function ProfileCard() {
               {"Full Name"}
             </MDTypography>  
              <MDTypography sx={{fontSize:"13px"}}   variant="p" color="black" fontWeight="bold">
-              {"Umar Adamu Jere"}
+              {name}
             </MDTypography>      
             <MDTypography sx={{fontSize:"9px"}}   variant="caption" color="text" fontWeight="regular">
               {"Gender"}
             </MDTypography>  
              <MDTypography sx={{fontSize:"13px"}}   variant="p" color="black" fontWeight="bold">
-              {"Male"}
+              {gender?gender:"Not set"}
             </MDTypography>                    
               <hr />
               <MDTypography sx={{fontSize:"9px"}}   variant="caption" color="text" fontWeight="regular">
               {"Email"}
             </MDTypography>  
              <MDTypography sx={{fontSize:"13px"}}   variant="p" color="black" fontWeight="bold">
-              {"umar.jere@gmail.com"}
+              {email}
             </MDTypography>           
             <MDTypography sx={{fontSize:"9px"}}   variant="caption" color="text" fontWeight="regular">
               {"Phone"}
             </MDTypography>  
              <MDTypography sx={{fontSize:"13px"}}   variant="p" color="black" fontWeight="bold">
-              {"07055793353"}
+              {phone}
             </MDTypography>          
              <hr />
              <MDTypography sx={{fontSize:"9px"}}   variant="caption" color="text" fontWeight="regular">
               {"Faculty"}
             </MDTypography>  
              <MDTypography sx={{fontSize:"13px"}}   variant="p" color="black" fontWeight="bold">
-              {"Sciences"}
+              {faculty?faculty:"Not set"}
             </MDTypography>           
             <MDTypography sx={{fontSize:"9px"}}   variant="caption" color="text" fontWeight="regular">
               {"Department"}
             </MDTypography>  
              <MDTypography sx={{fontSize:"13px"}}   variant="p" color="black" fontWeight="bold">
-              {"Mathematics"}
+              {department?department:"Not set"}
             </MDTypography>           
             <MDTypography sx={{fontSize:"9px"}}   variant="caption" color="text" fontWeight="regular">
               {"Moderator"}
             </MDTypography>  
              <MDTypography sx={{fontSize:"13px"}}   variant="p" color="black" fontWeight="bold">
-              {"Dr Audi T Giwa"}
+              {staffAdmin?staffAdmin:" Not set"}
             </MDTypography>          
             <MDTypography mt={1} sx={{fontSize:"13px"}}   variant="p" color="black" fontWeight="bold">Status:   
                 <MDBadge badgeContent={"not submitted"}

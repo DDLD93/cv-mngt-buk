@@ -80,7 +80,7 @@ const routes = [
     name: "CV Documents",
     key: "cv-document",
     icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/cv-document",
+    route: "/document",
     component: <Document />,
   },
   // {
@@ -118,14 +118,21 @@ const routes = [
   // },
 ];
 const staffRoutes = [
- 
+  {
+    type: "collapse",
+    name: "Home",
+    key: "home",
+    icon: <Icon fontSize="small">home</Icon>,
+    route: "/",
+    component: <Home />,
+  },
  
   {
     type: "collapse",
     name: "CV Documents",
     key: "cv-document",
     icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/",
+    route: "/document",
     component: <Document />,
   },
 
@@ -137,6 +144,7 @@ const staffRoutes = [
     route: "/profile",
     component: <Profile />,
   },
+  
   // {
   //   type: "collapse",
   //   name: "Log Out",
@@ -166,10 +174,18 @@ const staffAdmin = [
   // },
   {
     type: "collapse",
+    name: "Home",
+    key: "home",
+    icon: <Icon fontSize="small">home</Icon>,
+    route: "/",
+    component: <Home />,
+  },
+  {
+    type: "collapse",
     name: "Users",
     key: "users",
     icon: <Icon fontSize="small">group</Icon>,
-    route: "/",
+    route: "/users",
     component: <Tables />,
   },
   {
@@ -177,7 +193,7 @@ const staffAdmin = [
     name: "CV Documents",
     key: "cv-document",
     icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/cv-document",
+    route: "/document",
     component: <Document />,
   },
   // {

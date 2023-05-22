@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState,useContext } from "react";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -36,6 +36,7 @@ import ProfileCard from "./component/ProfileCard";
 import TimelineList from "examples/Timeline/TimelineList";
 import Transaction from "layouts/document/components/Transaction";
 import Transactions from "layouts/document/components/Transactions";
+import { StateContext } from "context/state";
 
 
 
@@ -54,13 +55,23 @@ function Home() {
   const closeWarningSB = () => setWarningSB(false);
   const openErrorSB = () => setErrorSB(true);
   const closeErrorSB = () => setErrorSB(false);
+  const { user, notification } = useContext(StateContext);
+  console.log(user)
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox mt={0} mb={0}>
       <Grid container sx={{height:"70vh",margin:0}} spacing={0}  justifyContent="center">
-        <ProfileCard/>
+        <ProfileCard
+        name={user.fullName}
+        email={user.email}
+        gender={user.gender}
+        phone={user.phone}
+        faculty={user.faculty}
+        department={user.department}
+        staffAdmin={user.staffAdmin&&user.staffAdmin.fullName}
+        />
          </Grid> 
       </MDBox>
       <Footer />

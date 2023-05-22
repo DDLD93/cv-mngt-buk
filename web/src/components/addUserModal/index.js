@@ -8,6 +8,7 @@ import MDTypography from "components/MDTypography";
 import BasicSelect from "components/forms/section/component/Select";
 import { StateContext } from "../../context/state"
 import config from "../../config";
+import {facultyList} from "./list.js"
 const style = {
   modal: {
     position: "absolute",
@@ -48,8 +49,8 @@ export default function BasicModal({ insertUser }) {
   const [title, setTitle] = useState(null);
   const [manager, setManager] = useState(null);
   const [managerList, setmanagerList] = useState([])
-  const [faculty, setFaculty] = useState(null)
-  const [department, setDepartment] = useState(null)
+  let [faculty, setFaculty] = useState([])
+  const [department, setDepartment] = useState([])
   const [btn, setBtn] = useState(true)
   const { notification, loadingState } = useContext(StateContext);
 
@@ -71,8 +72,8 @@ export default function BasicModal({ insertUser }) {
             phone: manager.phone,
             email: manager.email,
           } : null,
-        faculty: manager?.faculty,
-        department: manager?.department,
+        faculty: faculty,
+        department: department,
         password: 123456
       };
       let response = await fetch(`${config.userEndPoint}/api/v1/user`, {
@@ -125,6 +126,7 @@ export default function BasicModal({ insertUser }) {
     getUserAdmin().
       then(r => {
         setmanagerList(r?.payload)
+        console.log(r.payload)
       }).
       catch(err => notification("error", err.message))
     return () => {
@@ -179,7 +181,7 @@ export default function BasicModal({ insertUser }) {
                 cValue={title}
                 changes={e => setTitle(e.target.value)}
                 list={[
-                  { name: "None", value: "none" },
+                  { name: "Mal", value: "mallam" },
                   { name: "Professor", value: "professor" },
                   { name: "Dr", value: "Dr" },
                 ]}
@@ -235,7 +237,7 @@ export default function BasicModal({ insertUser }) {
                 <Autocomplete
                   size="small"
                   disabled={role == 'staff admin' && true}
-                  getOptionLabel={(option) => (`${option?.department} (${option?.fullName})`)}
+                  getOptionLabel={(option) => (`${option?.staffAdmin?.department} (${option?.fullName})`)}
                   onChange={(e, v) => { setManager(v) }}
                   options={managerList}
                   renderInput={(params) => (
@@ -256,25 +258,17 @@ export default function BasicModal({ insertUser }) {
               <BasicSelect
                 label="Faculty"
                 cValue={faculty}
-                changes={e => setFaculty(e.target.value)}
-                list={[
-                  { name: "Science", value: "science" },
-                  { name: "Art", value: "art" },
-                  { name: "Education", value: "education" },
-                ]}
+                changes={e => console.log(e.target.value)}
+                list={facultyList}
               />
             </Grid>
             <Grid sx={{ display: role != "staff" ? "block" : "none" }} item xs={12} >
-              <BasicSelect
+              {/* <BasicSelect
                 label="Department"
                 cValue={department}
                 changes={e => setDepartment(e.target.value)}
-                list={[
-                  { name: "Mathematics", value: "Mathematics" },
-                  { name: "Geography", value: "Geography" },
-                  { name: "Statistics", value: "Statistics" },
-                ]}
-              />
+                list={faculty}
+              /> */}
             </Grid>
             <Grid item xs={12} mt={4} mb={1}>
               <MDButton disabled={btn} onClick={createUser} size='small' variant="gradient" type="submit" color="info" fullWidth>

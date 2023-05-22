@@ -4,6 +4,7 @@
 /node_modules
 /user/node_modules
 /form/node_modules
+*/node_modules
 .DS_Store
 
 # testing
