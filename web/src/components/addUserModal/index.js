@@ -258,7 +258,7 @@ export default function BasicModal({ insertUser }) {
               <BasicSelect
                 label="Faculty"
                 cValue={faculty}
-                changes={e => console.log(e.target.value)}
+                changes={e => setFaculty(e.target.value)}
                 list={facultyList}
               />
             </Grid>
@@ -267,7 +267,7 @@ export default function BasicModal({ insertUser }) {
                 label="Department"
                 cValue={department}
                 changes={e => setDepartment(e.target.value)}
-                list={faculty}
+                list={faculty.}
               /> */}
             </Grid>
             <Grid item xs={12} mt={4} mb={1}>
