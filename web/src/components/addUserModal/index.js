@@ -8,7 +8,7 @@ import MDTypography from "components/MDTypography";
 import BasicSelect from "components/forms/section/component/Select";
 import { StateContext } from "../../context/state"
 import config from "../../config";
-import {facultyList} from "./list.js"
+import { facultyList } from "./list.js"
 const style = {
   modal: {
     position: "absolute",
@@ -49,8 +49,9 @@ export default function BasicModal({ insertUser }) {
   const [title, setTitle] = useState(null);
   const [manager, setManager] = useState(null);
   const [managerList, setmanagerList] = useState([])
-  let [faculty, setFaculty] = useState([])
+  const [faculty, setFaculty] = useState([])
   const [department, setDepartment] = useState([])
+  const [departmentList, setDepartmentList] = useState([])
   const [btn, setBtn] = useState(true)
   const { notification, loadingState } = useContext(StateContext);
 
@@ -101,6 +102,12 @@ export default function BasicModal({ insertUser }) {
       return error
     }
   }
+  function handleSetFaculty(e) {
+    const value = e.target.value.split(",")
+    setDepartment("")
+    setDepartmentList(value)
+    console.log(e)
+  }
   const createUser = () => {
     loadingState(true)
     addUser()
@@ -148,17 +155,17 @@ export default function BasicModal({ insertUser }) {
   }, [role])
 
   useEffect(() => {
-  if(phone==null||email==null||role==""||title==null||fullName==null){ 
-    setBtn(true)
-  }else{
-    setBtn(false)
-    //if(role==="staff"&&manager)setBtn(false)
-   // if(role!="staff"&&department&&faculty)setBtn(false)
-  }
-   
- 
-  }, [phone,email,role,title,manager,faculty,department,fullName])
-  
+    if (phone == null || email == null || role == "" || title == null || fullName == null) {
+      setBtn(true)
+    } else {
+      setBtn(false)
+      //if(role==="staff"&&manager)setBtn(false)
+      // if(role!="staff"&&department&&faculty)setBtn(false)
+    }
+
+
+  }, [phone, email, role, title, manager, faculty, department, fullName])
+
   return (
     <div style={style.button}>
       <MDButton size="small" onClick={handleOpen} color="primary">
@@ -255,20 +262,20 @@ export default function BasicModal({ insertUser }) {
               </Grid>
             </Grid>
             <Grid sx={{ display: role != "staff" ? "block" : "none" }} item xs={12} >
-              <BasicSelect
+              <FacultySelect
                 label="Faculty"
                 cValue={faculty}
-                changes={e => setFaculty(e.target.value)}
+                changes={handleSetFaculty}
                 list={facultyList}
               />
             </Grid>
             <Grid sx={{ display: role != "staff" ? "block" : "none" }} item xs={12} >
-              {/* <BasicSelect
+              <DepartmentSelect
                 label="Department"
                 cValue={department}
                 changes={e => setDepartment(e.target.value)}
-                list={faculty.}
-              /> */}
+                list={departmentList}
+              />
             </Grid>
             <Grid item xs={12} mt={4} mb={1}>
               <MDButton disabled={btn} onClick={createUser} size='small' variant="gradient" type="submit" color="info" fullWidth>
@@ -279,5 +286,58 @@ export default function BasicModal({ insertUser }) {
         </Box>
       </Modal>
     </div>
+  );
+}
+
+
+function FacultySelect(prop) {
+  const [focus, setFocus] = React.useState(false)
+  return (
+    <TextField
+      value={prop.cValue}
+      fullWidth
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
+      select={focus}
+      label={prop.label}
+      disabled={prop.isDisabled}
+      size='small'
+      SelectProps={{
+        native: true,
+      }}
+      onChange={prop.changes}
+    >
+      {prop.list.map((li) => (
+        <option value={li.value}>
+          {li.name}
+        </option>
+      ))}
+    </TextField>
+  );
+}
+
+function DepartmentSelect(prop) {
+  const [focus, setFocus] = React.useState(false)
+  return (
+    <TextField
+      value={prop.cValue}
+      fullWidth
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
+      select={focus}
+      label={prop.label}
+      disabled={prop.isDisabled}
+      size='small'
+      SelectProps={{
+        native: true,
+      }}
+      onChange={prop.changes}
+    >
+      {prop.list.map((li) => (
+        <option value={li}>
+          {li}
+        </option>
+      ))}
+    </TextField>
   );
 }
