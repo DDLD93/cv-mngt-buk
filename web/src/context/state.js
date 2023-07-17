@@ -35,9 +35,11 @@ export default function StateContextProvider({ children }) {
     let formData = new FormData(); 
     formData.append("file",formPostData?.file)  
     formData.append("meta",JSON.stringify(formPostData?.data)) 
-    console.log(formPostData?.data)
+    console.log("formPostData?.data>>>>>",formPostData?.data)
+    console.log("formPostData?.file>>>>>",formPostData?.file)
+    
     setLoading(true);
-    const response = await fetch(`${config.formEndPoint}/api/v1/forms/`, {
+    const response = await fetch(`${config.formEndPoint}/api/v1/forms`, {
       method: "POST",
       body: formData
     });
