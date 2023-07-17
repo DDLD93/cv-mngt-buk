@@ -41,7 +41,7 @@ function Tables() {
     fetch(`${config.userEndPoint}/api/v1/user`)
       .then(res => res.json())
       .then(status => {
-        console.log("res >>>>", status)
+        console.log("res <<<<<<>>>>", status)
         let rows = status.payload.map(user => {
           return {
             author: (<Author image={avatar} name={user?.fullName} email={user?.email} />),

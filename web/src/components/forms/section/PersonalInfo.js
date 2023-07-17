@@ -65,10 +65,11 @@ function PersonalInfo() {
   }
 
   const readyState = () => {
+    console.log("ready state ran");
     setFormPost({
       file,
-      data:{
-        userId:user?._id,
+      data: {
+        userId: user?._id,
         personalInfo: {
           firstName,
           lastName,
@@ -81,6 +82,13 @@ function PersonalInfo() {
       }
     }
     )
+    console.log("personalInfo>>>", firstName,
+    lastName,
+    otherName,
+    email,
+    phone,
+    address,
+    statement);
     buttonState(false)
   };
 
@@ -126,7 +134,7 @@ function PersonalInfo() {
           onChange={handleFormChange}
           size="small"
           name="surName"
-          label="Last Name"
+          label="Other Name"
           variant="outlined"
         />
         <TextField
@@ -134,7 +142,7 @@ function PersonalInfo() {
           helperText="Optional"
           size="small"
           name="lastName"
-          label="Other Name"
+          label="Last Name"
           variant="outlined"
         />
       </Box>

@@ -15,8 +15,8 @@ function Membership() {
   const [disabled, setdisabled] = useState(true);
   const [focusStart, setFocusStart] = useState(false);
   const [hasValueStart, setHasValueStart] = useState("");
-
-  const { disable, loading, formPostData, buttonState, setFormPost,user } = useContext(StateContext);
+  const textInput = React.useRef(null)
+  const { disable, loading, formPostData, buttonState, setFormPost, user } = useContext(StateContext);
 
   const color = lists.length < 1 ? "" : "lightBlue";
   var key = uuid();
@@ -30,6 +30,7 @@ function Membership() {
     setlists((prev) => [...prev, list]);
     setTitle("")
     setOrganisation("")
+    textInput.current.value = ""
   };
   const deleteEntry = (e) => {
     let id = e.target.id;
@@ -37,9 +38,9 @@ function Membership() {
   };
   const readyState = () => {
     setFormPost({
-      id:user?._id,
-      data:{
-        membership:lists
+      id: user?._id,
+      data: {
+        membership: lists
       }
     });
     buttonState(false)
@@ -81,6 +82,7 @@ function Membership() {
         <TextField
           onFocus={() => setFocusStart(true)}
           onBlur={() => setFocusStart(false)}
+          inputRef={textInput}
           size="small"
           onChange={(e) => {
             if (e.target.value) setHasValueStart(e.target.value);
@@ -90,14 +92,14 @@ function Membership() {
           label="Date Started"
           variant="outlined"
         />
-       <Fab size="small" color="secondary" onClick={add} disabled={disabled}  component="label" >
-         <AddIcon />
-      </Fab>
+        <Fab size="small" color="secondary" onClick={add} disabled={disabled} component="label" >
+          <AddIcon />
+        </Fab>
       </Grid>
       <Grid
         sx={{
-          mt:5,
-          p:1.2,
+          mt: 5,
+          p: 1.2,
           display: "flex",
           gap: 2,
           maxWidth: 650,
@@ -126,22 +128,22 @@ export default Membership;
 
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 const RenderList = (prop) => {
-    return (
-<Grid gap={1} flexWrap="nowrap" container alignItems="center" > 
-     <TextField size="small" disabled  defaultValue={prop.orgnisation}  label="Orgnisation" variant="outlined" />
-     <TextField size="small" disabled  defaultValue={prop.title}  label="Title" variant="outlined" />
-     <TextField size="small" disabled defaultValue={prop.start}  label="Date" />
-     <Icon fontSize="50"
-      style={{
-         cursor:"pointer",
-         color:"red"
-         
-     }}>
-         <DeleteForeverIcon
-         id={prop.id}
-         onClick= {prop.delete}
-         />
-     </Icon>
-        </Grid>
-    )
-  }
+  return (
+    <Grid gap={1} flexWrap="nowrap" container alignItems="center" >
+      <TextField size="small" disabled defaultValue={prop.orgnisation} label="Orgnisation" variant="outlined" />
+      <TextField size="small" disabled defaultValue={prop.title} label="Title" variant="outlined" />
+      <TextField size="small" disabled defaultValue={prop.start} label="Date" />
+      <Icon fontSize="50"
+        style={{
+          cursor: "pointer",
+          color: "red"
+
+        }}>
+        <DeleteForeverIcon
+          id={prop.id}
+          onClick={prop.delete}
+        />
+      </Icon>
+    </Grid>
+  )
+}

@@ -52,10 +52,11 @@ export default function BasicModal({ insertUser }) {
   const [faculty, setFaculty] = useState([])
   const [department, setDepartment] = useState([])
   const [departmentList, setDepartmentList] = useState([])
-  const [btn, setBtn] = useState(true)
+  const [btn, setBtn] = useState(false)
   const { notification, loadingState } = useContext(StateContext);
-
+  // console.log("managerList><><><>>", managerList);
   async function addUser() {
+    console.log("function addUser ran");
     try {
       let user = {
         Title: title,
@@ -77,6 +78,7 @@ export default function BasicModal({ insertUser }) {
         department: department,
         password: 123456
       };
+      console.log("user>>>", user);
       let response = await fetch(`${config.userEndPoint}/api/v1/user`, {
         method: "POST",
         headers: {
@@ -103,10 +105,17 @@ export default function BasicModal({ insertUser }) {
     }
   }
   function handleSetFaculty(e) {
-    const value = e.target.value.split(",")
+    const value = e.target.value
+    facultyList.forEach(li => {
+      if (li.name === value) {
+        setDepartmentList(li.value)
+      }
+    })
     setDepartment("")
-    setDepartmentList(value)
-    console.log(e)
+    setFaculty(value)
+    // setFaculty()
+    // console.log("handleSetFaculty>>>>",e)
+    // console.log("handleSetFaculty>>>", value)
   }
   const createUser = () => {
     loadingState(true)
@@ -132,8 +141,9 @@ export default function BasicModal({ insertUser }) {
   useEffect(() => {
     getUserAdmin().
       then(r => {
+        // console.log("staff adminssss>>>", r);
         setmanagerList(r?.payload)
-        console.log(r.payload)
+        console.log("r.payload", r.payload)
       }).
       catch(err => notification("error", err.message))
     return () => {
@@ -154,17 +164,37 @@ export default function BasicModal({ insertUser }) {
     }
   }, [role])
 
-  useEffect(() => {
-    if (phone == null || email == null || role == "" || title == null || fullName == null) {
-      setBtn(true)
-    } else {
-      setBtn(false)
-      //if(role==="staff"&&manager)setBtn(false)
-      // if(role!="staff"&&department&&faculty)setBtn(false)
-    }
+  // useEffect(() => {
+
+    // switch (role) {
+    //   case "admin":
+    //     if (title == null || fullName == null || email == null || phone == null || manager == null || faculty == null || department == null) {
+    //       console.log("admin btn state >>>>>>>", btn);
+    //       setBtn(true)
+    //     }
+    //     break;
+    //   case "staff admin":
+    //     if (title == null || fullName == null || email == null || phone == null || faculty == null || department == null) {
+    //       console.log("staff admin btn state >>>>>>>", btn);
+    //       setBtn(true)
+    //     }
+    //     break;
+    //   case "staff":
+    //     if (title == null || fullName == null || email == null || phone == null || manager == null) {
+    //       console.log("staff btn state >>>>>>>", btn);
+    //       setBtn(true)
+    //     }
+    //     break;
+
+    //   default:
+    //     console.log("btn state >>>>>>>", btn);
+    //     setBtn(false)
+    //     break;
+    // }
 
 
-  }, [phone, email, role, title, manager, faculty, department, fullName])
+  // }, [phone, email, role, title, manager, faculty, department, fullName])
+
 
   return (
     <div style={style.button}>
@@ -244,8 +274,8 @@ export default function BasicModal({ insertUser }) {
                 <Autocomplete
                   size="small"
                   disabled={role == 'staff admin' && true}
-                  getOptionLabel={(option) => (`${option?.staffAdmin?.department} (${option?.fullName})`)}
-                  onChange={(e, v) => { setManager(v) }}
+                  getOptionLabel={(option) => (`${option?.department} (${option?.fullName})`)}
+                  onChange={(e, v) => { setManager(v); console.log("v>>>>>><<<", v); }}
                   options={managerList}
                   renderInput={(params) => (
                     <TextField
@@ -292,6 +322,8 @@ export default function BasicModal({ insertUser }) {
 
 function FacultySelect(prop) {
   const [focus, setFocus] = React.useState(false)
+  // console.log("FacultySelect", prop);
+  // setFaculty({})
   return (
     <TextField
       value={prop.cValue}
@@ -308,7 +340,7 @@ function FacultySelect(prop) {
       onChange={prop.changes}
     >
       {prop.list.map((li) => (
-        <option value={li.value}>
+        <option value={li.name}>
           {li.name}
         </option>
       ))}

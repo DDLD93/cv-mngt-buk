@@ -15,16 +15,18 @@ function Education() {
   const [lists, setlists] = React.useState([]);
   const [disabled, setdisabled] = useState(true);
   const [focusStart, setFocusStart] = useState(false);
-  const [hasValueStart, setHasValueStart] = useState(null);
+  const [hasValueStart, setHasValueStart] = useState("");
   const [focusEnd, setFocusEnd] = useState(false);
-  const [hasValueEnd, setHasValueEnd] = useState(null);
+  const [hasValueEnd, setHasValueEnd] = useState("");
 
   const { buttonState, setFormPost, user } = useContext(StateContext);
-  const textInput = React.useRef(null);
+  const textInputStart = React.useRef(null);
+  const textInputEnd = React.useRef(null);
 
   const color = lists.length < 1 ? "" : "lightBlue";
   var key = uuid();
   const add = () => {
+    console.log("func add ran>>>",hasValueStart);
     let list = {
       id: key,
       institution: inst,
@@ -36,9 +38,10 @@ function Education() {
     setlists((prev) => [...prev, list]);
     setinst("");
     setqualf("");
-    setHasValueStart(null)
-    setHasValueEnd(null)
-    textInput.current.value = "";
+    setHasValueStart("")
+    setHasValueEnd("")
+    textInputStart.current.value = "";
+    textInputEnd.current.value = "";
   };
   const deleteEntry = (e) => {
     let id = e.target.id;
@@ -90,7 +93,7 @@ function Education() {
         <TextField
           onFocus={() => setFocusStart(true)}
           size="small"
-          inputRef={textInput}
+          inputRef={textInputStart}
           onBlur={() => setFocusStart(false)}
           onChange={(e) => {
             if (e.target.value) setHasValueStart(e.target.value);
@@ -103,7 +106,7 @@ function Education() {
         <TextField
           onFocus={() => setFocusEnd(true)}
           size="small"
-          inputRef={textInput}
+          inputRef={textInputEnd}
           onBlur={() => setFocusEnd(false)}
           onChange={(e) => {
             if (e.target.value) setHasValueEnd(e.target.value);
