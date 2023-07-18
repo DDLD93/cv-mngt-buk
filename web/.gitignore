@@ -5,7 +5,9 @@
 /user/node_modules
 /form/node_modules
 .DS_Store
-
+*/build
+*/*build
+build
 # testing
 /coverage
 
