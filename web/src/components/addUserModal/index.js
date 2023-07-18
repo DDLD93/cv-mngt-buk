@@ -218,9 +218,18 @@ export default function BasicModal({ insertUser }) {
                 cValue={title}
                 changes={e => setTitle(e.target.value)}
                 list={[
-                  { name: "Mal", value: "mallam" },
+                  { name: "Prof Emiratis", value: "profEmiratis" },
                   { name: "Professor", value: "professor" },
                   { name: "Dr", value: "Dr" },
+                  { name: "Engr", value: "Engr" },
+                  { name: "Barrista", value: "Barrista" },
+                  { name: "Mr", value: "Mr" },
+                  { name: "Mrs", value: "Mrs" },
+                  { name: "Arc", value: "Arc" },
+                  { name: "Surv", value: "Surv" },
+                  { name: "Qsv", value: "Qsv" },
+                  { name: "Alh", value: "Alh" },
+                  { name: "Hajiya", value: "Hajiya" },
                 ]}
               />
             </Grid>

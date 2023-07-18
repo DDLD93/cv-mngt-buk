@@ -41,7 +41,7 @@ function Completed() {
       <Button onClick={reset}  sx={{mt:1}}>Update Document</Button>
       </>
       ):
-      <Typography>Submission awaiting approval</Typography>
+      <Typography>Submitted, awaiting approval</Typography>
       }
       </MDBox>  
     </Grid>
