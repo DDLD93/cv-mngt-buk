@@ -1,31 +1,17 @@
-version: "3.6"
+version: "3.8"
 services:
-  # reverse-proxy:
-  #   restart: always
-  #   image: traefik:v2.4
-  #   container_name: "traefik"
-  #   command:
-  #     - "--api.insecure=true"
-  #     - "--api.dashboard=true"
-  #     - "--api.debug=false"
-  #     - "--providers.docker=true"
-  #     - "--log.LEVEL=DEBUG"
-  #     - "--entryPoints.web.address=:80"
-  #     - "--entryPoints.websecure.address=:443"
-  #     - "--providers.docker.exposedbydefault=false"
-  #     - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
-  #     - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
-  #     - "--certificatesresolvers.myresolver.acme.email=umar.jere@gmail.com"
-  #     - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-  #   ports:
-  #     - "443:443"
-  #     - "80:80"
-  #     - "8080:8080"
-  #   volumes:
-  #     - "./letsencrypt:/letsencrypt"
-  #     - "/var/run/docker.sock:/var/run/docker.sock:ro"
-  #   networks:
-  #     - ujere_net
+  proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - $PWD/STORAGE/pm:/data
+      - $PWD/STORAGE/letsencrypt:/etc/letsencrypt
+    networks:
+      - ujere_net
   database:
     image: mongo:latest
     restart: always
@@ -33,63 +19,43 @@ services:
     ports:
         - 27017:27017
     volumes:
-      - mongodata:/data/db
+      - $PWD/STORAGE/mongodb:/data/db
     networks:
-        - ujere_net        
+        - ujere_net
   user:
     restart: always
     build: ./user
-    # labels:
-    #   - "traefik.enable=true"
-    #   - "traefik.http.routers.user.rule=Host(`user.ddld.info`)"
-    #   - "traefik.http.routers.user.entrypoints=websecure"
-    #   - "traefik.http.routers.user.tls.certresolver=myresolver"
-    #   - "traefik.http.routers.user.middlewares=redirect-to-https"
-    #   - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"  
-    #   - "traefik.http.routers.redirs.entrypoints=web"  
-    #   - "traefik.http.routers.redirs.middlewares=redirect-to-https"  
-    #   - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
     depends_on:
-      - database  
+      - database
     container_name: 'userAuth'
+    volumes:
+     - $PWD/STORAGE/uploads:/app/uploads
     environment:
       PORT: "${PORT}"
       MONGODB_HOST: "${MONGODB_HOST}"
     networks:
-        - ujere_net   
+        - ujere_net
   form:
     restart: always
     build: ./forms
-    # labels:
-    #   - "traefik.enable=true"
-    #   - "traefik.http.routers.form.rule=Host(`form.ddld.info`)"
-    #   - "traefik.http.routers.form.entrypoints=websecure"
-    #   - "traefik.http.routers.form.tls.certresolver=myresolver"
-    #   - "traefik.http.routers.form.middlewares=redirect-to-https"
-    #   - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"  
-    #   - "traefik.http.routers.redirs.entrypoints=web"  
-    #   - "traefik.http.routers.redirs.middlewares=redirect-to-https"  
-    #   - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
     depends_on:
-      - database  
+      - database
     volumes:
-     - ${PWD}/uploads:/app/uploads  
+     - $PWD/STORAGE/uploads:/app/uploads
     container_name: 'forms'
     environment:
       PORT: "${PORT}"
       MONGODB_HOST: "${MONGODB_HOST}"
     networks:
-        - ujere_net    
-  # web:
-  #   restart: always
-  #   build: ./web
-  #   depends_on:
-  #     - database  
-  #   container_name: 'web'
-  #   networks:
-  #       - ujere_net                                                             
+        - ujere_net
+  web:
+    restart: always
+    build: ./web
+    depends_on:
+      - database
+    container_name: 'web'
+    networks:
+        - ujere_net
 networks:
   ujere_net:
-    driver: bridge          
-volumes:
-  mongodata:   
+    driver: bridge

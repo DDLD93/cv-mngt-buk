@@ -63,6 +63,14 @@ class UserController {
       return { ok: false, payload: null, message: "unable to update user", error: err };
     }
   }
+  async updateUserstatus(id, status) {
+    try {
+      const user = await User.findByIdAndUpdate(id, {status}, { multi: false, new: true });
+      return { ok: true, payload: user, message: "operation succesiful", error: null };
+    } catch (err) {
+      return { ok: false, payload: null, message: "unable to update user", error: err };
+    }
+  }
   async deleteUser(id) {
     try {
       await User.findByIdAndDelete(id);

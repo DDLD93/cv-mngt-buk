@@ -35,7 +35,7 @@ function Completed() {
           mb={1}
           textAlign="center"
         >    
-      {user?.isApproved== true?(
+      {true?(
       <>
       <Typography>Submission Aprroved</Typography>
       <Button onClick={reset}  sx={{mt:1}}>Update Document</Button>

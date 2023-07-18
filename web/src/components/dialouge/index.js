@@ -164,7 +164,7 @@ export function ScrollDialog(prop) {
         data.status == "success"
           ? notification("success", data.message)
           : notification("error", data.message);
-        console.log(data)
+        console.log({data})
         setloading(false);
         setOpen(false)
       })
