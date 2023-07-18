@@ -43,19 +43,19 @@ function Tables() {
       .then(status => {
         console.log("res <<<<<<>>>>", status)
         let rows = status.payload.map(user => {
+          function statusColor() {
+            if (user?.formStatus=="approved") return "success"
+            if (user?.formStatus=="declined") return "error"
+            if (user?.formStatus=="not submitted") return "dark"
+            if (user?.formStatus== null) return "dark"
+          }
           return {
             author: (<Author image={avatar} name={user?.fullName} email={user?.email} />),
             function: (<Job title={user?.userRole} description={user?.userRole} />),
-            status: (
+            formStatus: (
               <MDBox ml={-1}>
-                <MDBadge badgeContent={user?.isSubmitted == true ?
-                  user?.isApproved == true ? "Approved" :
-                    "action needed" :
-                  "No submission"}
-                  color={user?.isSubmitted == true ?
-                    user?.isApproved == true ? "success" :
-                      "error" :
-                    "dark"}
+                <MDBadge badgeContent={user?.formStatus}
+                  color={statusColor()}
                   variant="gradient"
                   size="sm" />
               </MDBox>
@@ -149,7 +149,7 @@ const insertUser = (user) =>{
  const  columns= [
     { Header: "user", accessor: "author", width: "45%", align: "left" },
     { Header: "Role", accessor: "function", align: "left" },
-    { Header: "Form Status", accessor: "status", align: "center" },
+    { Header: "Form Status", accessor: "formStatus", align: "center" },
     { Header: "Created At", accessor: "employed", align: "center" },
     { Header: "action", accessor: "action", align: "center" },
   ]  
