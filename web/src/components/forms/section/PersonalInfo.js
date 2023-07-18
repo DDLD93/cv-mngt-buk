@@ -83,12 +83,12 @@ function PersonalInfo() {
     }
     )
     console.log("personalInfo>>>", firstName,
-    lastName,
-    otherName,
-    email,
-    phone,
-    address,
-    statement);
+      lastName,
+      otherName,
+      email,
+      phone,
+      address,
+      statement);
     buttonState(false)
   };
 
@@ -187,8 +187,8 @@ function PersonalInfo() {
         component="form"
         sx={{ height: 30, "& > :not(style)": { m: 1, width: "25ch", mt: 1 } }}
         noValidate
-        autoComplete="off"
-      >
+        autoComplete="off">
+
         <Typography color="blue" variant="caption" sx={{ display: "block", mt: 20 }}>
           Personal Statement
         </Typography>
@@ -214,6 +214,7 @@ function PersonalInfo() {
             type="file"
             hidden />
         </MDButton>
+        <span>{file ? file.name : ""}</span>
       </Box>
     </Container>
   );
