@@ -1,7 +1,7 @@
 const multer = require('multer');
 const uuid = require('uuid').v4;
 const FormCtrl = require("../controller/forms.controller")
-const {Admin, Qa, Staff, PSP} = require("../middleware/auth.middleware")
+const { Admin, Qa, Staff, PSP } = require("../middleware/auth.middleware")
 
 
 module.exports = (express, UPLOADS) => {
@@ -22,7 +22,7 @@ module.exports = (express, UPLOADS) => {
   const upload = multer({ storage });
   api = express.Router();
 
-  api.post("/",upload.single("file"), async (req, res) => {
+  api.post("/", upload.single("file"), async (req, res) => {
     let body = JSON.parse(req.body.meta)
     let status = await FormCtrl.addForm(body, req.filePath)
     if (status.ok) {
@@ -59,7 +59,7 @@ module.exports = (express, UPLOADS) => {
     let body = req.body;
     body.updatedAt = Date.now()
     delete body.createdAt;
-    let status = await FormCtrl.updateForm(id, {status:"declined"})
+    let status = await FormCtrl.updateForm(id, { status: "declined" })
     if (status.ok) {
       res.status(200).json(status.Form);
     } else {
@@ -72,11 +72,11 @@ module.exports = (express, UPLOADS) => {
     let body = req.body;
     body.updatedAt = Date.now()
     delete body.createdAt;
-    let status = await FormCtrl.updateForm(id, {status:"approved"})
+    let status = await FormCtrl.updateForm(id, { status: "approved" })
     if (status.ok) {
-      res.status(200).json(status.Form);
+      res.status(200).json(status);
     } else {
-      res.status(500).json(status.error);
+      res.status(500).json(status);
     }
   });
 

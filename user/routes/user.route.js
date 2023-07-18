@@ -46,7 +46,7 @@ module.exports = (express, UPLOADS) => {
     }
   });
   api.get("/:userRole", async (req, res) => {
-    let {userRole} = req.params
+    let { userRole } = req.params
     let status = await userCtrl.getCustom(userRole);
     if (status.ok) {
       if (status) return res.status(200).json(status);
@@ -59,6 +59,18 @@ module.exports = (express, UPLOADS) => {
   api.get("/:id", async (req, res) => {
     let { id } = req.params;
     let status = await userCtrl.getUser(id);
+    if (status.ok) {
+      if (status) return res.status(200).json(status);
+      res.status(200).json({});
+    } else {
+      res.status(500).json(status);
+    }
+  });
+
+  api.patch("/status/:id", async (req, res) => {
+    let { id } = req.params;
+    let data = req.body
+    let status = await userCtrl.updateUserstatus(id, data.status);
     if (status.ok) {
       if (status) return res.status(200).json(status);
       res.status(200).json({});
@@ -100,7 +112,7 @@ module.exports = (express, UPLOADS) => {
         fullName: user.fullName,
         userType: user.userType,
         staffAdmin: user.staffAdmin
-      },config.secrets.jwt,{ expiresIn: '24h' })
+      }, config.secrets.jwt, { expiresIn: '24h' })
       res.json({ status: "success", payload: user, token });
     } catch (error) {
       res.send(error);
