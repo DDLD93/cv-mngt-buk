@@ -32,27 +32,37 @@ export default function StateContextProvider({ children }) {
 
   }
   async function postForm(url = "") {
-    let formData = new FormData(); 
-    formData.append("file",formPostData?.file)  
-    formData.append("meta",JSON.stringify(formPostData?.data)) 
-    console.log("formPostData?.data>>>>>",formPostData?.data)
-    console.log("formPostData?.file>>>>>",formPostData?.file)
-    
+    let formData = new FormData();
+    formData.append("file", formPostData?.file)
+    formData.append("meta", JSON.stringify(formPostData?.data))
+    console.log("formPostData?.data>>>>>", formPostData?.data)
+    console.log("formPostData?.file>>>>>", formPostData?.file)
+
     setLoading(true);
     const response = await fetch(`${config.formEndPoint}/api/v1/forms`, {
       method: "POST",
       body: formData
     });
+    if (response.ok === "true") {
+      notification("success", response.message)
+    } else {
+      notification("error", response.message)
+    }
     setLoading(false);
     return response.json();
   }
   async function submit(data) {
     console.log(data)
-    const response = await fetch(`http://localhost:5000/create`,{
-      method:"POST",
-      body:data
+    const response = await fetch(`http://localhost:5000/create`, {
+      method: "POST",
+      body: data
     })
-    return response.json()  
+    if (response.ok === "true") {
+      notification("success", response.message)
+    } else {
+      notification("error", response.message)
+    }
+    return response.json()
   }
   async function postData(url = "") {
     setLoading(true);
@@ -63,10 +73,16 @@ export default function StateContextProvider({ children }) {
       },
       body: JSON.stringify(formPostData.data),
     });
+    if (response.ok === "true") {
+      notification("success", response.message)
+    } else {
+      notification("error", response.message)
+    }
     setLoading(false);
     return response.json();
   }
   const login = (data) => {
+    console.log("data", data);
     setLoading(true)
     fetch(`${config.userEndPoint}/api/v1/user/login`, {
       method: "POST",
