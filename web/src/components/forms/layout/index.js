@@ -30,7 +30,7 @@ export default function StepperHorizotal() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [activeStepTitle, setActiveStepTitle] = React.useState("Personal Info");
   const [completed, setCompleted] = React.useState({});
-  const { disable, loading, loadingState, postData,postForm, user, notification,setUser } = useContext(StateContext);
+  const { disable, loading, loadingState, postData, postForm, user, notification, setUser } = useContext(StateContext);
 
   const totalSteps = () => {
     return steps.length;
@@ -62,6 +62,7 @@ export default function StepperHorizotal() {
   const handleStep = (step, ssss) => () => {
     setActiveStep(step);
     setActiveStepTitle(ssss);
+    console.log("here ooo>>", activeStep);
     console.log(activeStepTitle);
   };
 
@@ -117,27 +118,27 @@ export default function StepperHorizotal() {
         break;
       case 4:
         postData("skills").
-        then(() => {
-          Next();
-          setActiveStepTitle("Additional Information");
-        }).catch((err) => {
-          notification("error", err.message)
-          loadingState(false)
+          then(() => {
+            Next();
+            setActiveStepTitle("Additional Information");
+          }).catch((err) => {
+            notification("error", err.message)
+            loadingState(false)
 
-        })
+          })
         break;
-        case 5:
+      case 5:
         postData("Additional Information").
-        then((res) => {
-          // localStorage.setItem("user", JSON.stringify(res.payload))
-          // setUser()
-          Next();
-          setActiveStepTitle("submitted");
-        }).catch((err) => {
-          notification("error", err.message)
-          loadingState(false)
+          then((res) => {
+            // localStorage.setItem("user", JSON.stringify(res.payload))
+            // setUser()
+            Next();
+            setActiveStepTitle("submitted");
+          }).catch((err) => {
+            notification("error", err.message)
+            loadingState(false)
 
-        })
+          })
         break;
       default:
         break;
@@ -150,48 +151,48 @@ export default function StepperHorizotal() {
   };
   return (
     <Box color='info' sx={{ width: "100%" }}>
-      {user?.isSubmitted || activeStepTitle == "submitted" ? <Completed/>:
-      <>
-      <Stepper nonLinear activeStep={activeStep}>
-        {steps.map((label, index) => (
-          <Step sx={{mt:0}} key={label} completed={completed[index]}>
-            <StepButton  color="info" onClick={handleStep(index, label)}>
-              {label}
-            </StepButton>
-          </Step>
-        ))}
-      </Stepper>
-      <div>
-        {allStepsCompleted() ? (
-          <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Box sx={{ flex: "1 1 auto" }} />
-              <Button variant="contained" onClick={handleReset}>
-                Submit
-              </Button>
-            </Box>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
-            <h3 style={{ marginTop: "10px" }}>{activeStepTitle}</h3>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2, minHeight: 300 }}>
+      {user?.formstatus || activeStepTitle == "submitted" ? <Completed /> :
+        <>
+          <Stepper nonLinear activeStep={activeStep}>
+            {steps.map((label, index) => (
+              <Step sx={{ mt: 0 }} key={label} completed={completed[index]}>
+                <StepButton color="info" onClick={handleStep(index, label)}>
+                  {label}
+                </StepButton>
+              </Step>
+            ))}
+          </Stepper>
+          <div>
+            {allStepsCompleted() ? (
+              <React.Fragment>
+                <Typography sx={{ mt: 2, mb: 1 }}>
+                  All steps completed - you&apos;re finished
+                </Typography>
+                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                  <Box sx={{ flex: "1 1 auto" }} />
+                  <Button variant="contained" onClick={handleReset}>
+                    Submit
+                  </Button>
+                </Box>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
+                <h3 style={{ marginTop: "10px" }}>{activeStepTitle}</h3>
+                <Box sx={{ display: "flex", flexDirection: "row", pt: 2, minHeight: 300 }}>
 
-            
-              {activeStepTitle == "Personal Info" && <PersanalInfo />}
-              {activeStepTitle == "Education" && <Education />}
-              {activeStepTitle == "Work History" && <WorkHistory />}
-              {activeStepTitle == "Professioal Membership" && <Membership />}
-              {activeStepTitle == "Skills" && <Skills />}
-              {activeStepTitle == "Additional Information" && <Info />}
-              
 
-            </Box>
-            <Box sx={{ display: "flex", flexDirection: "row", pr: 7 }}>
-              {/* <Button
+                  {activeStepTitle == "Personal Info" && <PersanalInfo />}
+                  {activeStepTitle == "Education" && <Education />}
+                  {activeStepTitle == "Work History" && <WorkHistory />}
+                  {activeStepTitle == "Professioal Membership" && <Membership />}
+                  {activeStepTitle == "Skills" && <Skills />}
+                  {activeStepTitle == "Additional Information" && <Info />}
+
+
+                </Box>
+                <Box sx={{ display: "flex", flexDirection: "row", pr: 7 }}>
+                  {/* <Button
                 color="inherit"
                 disabled={activeStep === 0}
                 onClick={handleBack}
@@ -199,35 +200,44 @@ export default function StepperHorizotal() {
               >
                 Back
               </Button> */}
-              <Box sx={{ flex: "1 1 auto" }} />
-              {/* <Button onClick={handleNext} sx={{ mr: 1 }}>
-                Save
-              </Button> */}
-              {activeStep !== steps.length &&
-                (completed[activeStep] ? (
-                  <Typography variant="caption" sx={{ display: "inline-block" }}>
-                    Step { } already completed
-                  </Typography>
-                ) : (
-                  <LoadingButton
-                    variant="contained"
-                    size="small"
-                    loading={loading}
-                    disabled={disable}
-                    endIcon={<NavigateNextIcon />}
-                    loadingPosition="end"
-                    onClick={handleComplete}
-                  >
-                    {completedSteps() === totalSteps() - 1 ? "Preview" : "Continue"}
-                  </LoadingButton>
-                ))}
-            </Box>
-          </React.Fragment>
-        )}
-      </div>
-      </>
+                  <Box sx={{ flex: "1 1 auto" }} />
+                  {
+                    activeStepTitle == "Additional Information" && <Button
+                    // onClick={}
+                      disabled={false}
+                      variant="contained"
+                      size="small"
+                      endIcon={<NavigateNextIcon />}
+                      loadingPosition="end"
+                      sx={{ mr: 1 }}>
+                      Skip
+                    </Button>
+                  }
+                  {activeStep !== steps.length &&
+                    (completed[activeStep] ? (
+                      <Typography variant="caption" sx={{ display: "inline-block" }}>
+                        Step { } already completed
+                      </Typography>
+                    ) : (
+                      <LoadingButton
+                        variant="contained"
+                        size="small"
+                        loading={loading}
+                        disabled={disable}
+                        endIcon={<NavigateNextIcon />}
+                        loadingPosition="end"
+                        onClick={handleComplete}
+                      >
+                        {completedSteps() === totalSteps() - 1 ? "Preview" : "Continue"}
+                      </LoadingButton>
+                    ))}
+                </Box>
+              </React.Fragment>
+            )}
+          </div>
+        </>
 
-}
+      }
     </Box>
   );
 }

@@ -20,7 +20,7 @@ const userSchema = new Schema({
   email: { type: String, required: true, index: true, unique: true, dropDups: true },
   password: { type: String, required: true },
   userRole: { type: String, required: true, enum: ["admin", "staff", "staff admin"]},
-  formStatus: { type: String, enum: ["not submitted", "incompleted", "submitted", "approved", "declined"], default: "not submitted" },
+  formStatus: { type: String, enum: ["not submitted", "incompleted", "pending", "approved", "declined"], default: "not submitted" },
   staffAdmin: staffAdmin,
   faculty: { type: String,},
   department : { type: String,},

@@ -46,14 +46,27 @@ module.exports = (express, UPLOADS) => {
   api.get("/:id", async (req, res) => {
     let { id } = req.params;
     let status = await FormCtrl.getByUserID(id);
-    console.log(status)
     if (status.ok) {
-      if (status.form) return res.status(200).json(status.form);
-      res.status(200).json({});
+      res.status(200).json(status);
     } else {
-      res.status(500).json(status.error);
+      res.status(500).json(status);
     }
   });
+  
+  api.put("/reset/:id", async (req, res) => {
+    let { id } = req.params;
+    let status = await FormCtrl.updateForm(id, { status: "not submitted" })
+    if (status.ok) {
+      let status = await UserCtrl.updateForm(id, { formStatus: "not submitted" })
+      if (status.ok) {
+        res.status(200).json(status);
+      } else {
+        res.status(500).json(status);
+      }
+    } else {
+      res.status(500).json(status);
+    }
+  })
 
   api.put("/reject/:id", async (req, res) => {
     let { id } = req.params;
@@ -99,9 +112,9 @@ module.exports = (express, UPLOADS) => {
     delete body.createdAt;
     let status = await FormCtrl.updateForm(id, body)
     if (status.ok) {
-      res.status(200).json(status.Form);
+      res.status(200).json(status);
     } else {
-      res.status(500).json(status.error);
+      res.status(500).json(status);
     }
   });
 
