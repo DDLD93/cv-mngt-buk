@@ -73,7 +73,7 @@ export default function StateContextProvider({ children }) {
       },
       body: JSON.stringify(formPostData.data),
     });
-    if (response.ok === "true") {
+    if (response.ok === true) {
       notification("success", response.message)
     } else {
       notification("error", response.message)

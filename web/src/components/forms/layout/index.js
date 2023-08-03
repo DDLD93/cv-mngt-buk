@@ -130,6 +130,7 @@ export default function StepperHorizotal() {
       case 5:
         postData("Additional Information").
           then((res) => {
+            console.log({res})
             // localStorage.setItem("user", JSON.stringify(res.payload))
             // setUser()
             Next();
@@ -151,7 +152,7 @@ export default function StepperHorizotal() {
   };
   return (
     <Box color='info' sx={{ width: "100%" }}>
-      {user?.formstatus || activeStepTitle == "submitted" ? <Completed /> :
+      {user?.formStatus == "submitted" || activeStepTitle == "submitted" ? <Completed /> :
         <>
           <Stepper nonLinear activeStep={activeStep}>
             {steps.map((label, index) => (
