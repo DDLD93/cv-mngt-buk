@@ -56,7 +56,6 @@ export default function BasicModal({ insertUser }) {
   const { notification, loadingState } = useContext(StateContext);
   // console.log("managerList><><><>>", managerList);
   async function addUser() {
-    console.log("function addUser ran");
     try {
       let user = {
         Title: title,
@@ -78,7 +77,6 @@ export default function BasicModal({ insertUser }) {
         department: department,
         password: 123456
       };
-      console.log("user>>>", user);
       let response = await fetch(`${config.userEndPoint}/api/v1/user`, {
         method: "POST",
         headers: {
@@ -282,7 +280,7 @@ export default function BasicModal({ insertUser }) {
               <Grid item xs={9} >
                 <Autocomplete
                   size="small"
-                  disabled={role == 'staff admin' && true}
+                  disabled={role == 'staff admin' && managerList.length && true}
                   getOptionLabel={(option) => (`${option?.department} (${option?.fullName})`)}
                   onChange={(e, v) => { setManager(v); console.log("v>>>>>><<<", v); }}
                   options={managerList}
