@@ -84,6 +84,7 @@ export default function BasicModal({ insertUser }) {
         },
         body: JSON.stringify(user),
       });
+      
       return response.json();
     } catch (error) {
       return error
@@ -97,8 +98,14 @@ export default function BasicModal({ insertUser }) {
           "Content-Type": "application/json",
         },
       });
+      if (response.ok === "true") {
+        notification("success", response.message)
+      }else{
+        notification("error", response.message)
+      }
       return response.json();
     } catch (error) {
+      notification("error", error.message)
       return error
     }
   }

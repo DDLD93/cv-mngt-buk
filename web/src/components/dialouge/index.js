@@ -200,7 +200,7 @@ export function ScrollDialog(prop) {
         //console.log(AddInfo)
       })
       .catch((err) => {
-        // notification("error", err.message);
+        notification("error", err.message);
       });
     if (open) {
       const { current: descriptionElement } = descriptionElementRef;
