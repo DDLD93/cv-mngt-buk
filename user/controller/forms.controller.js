@@ -46,7 +46,7 @@ class FormController {
   async updateForm(id, newData) {
     try {
       const updatedForm = await Form.findOneAndUpdate({userId:id},newData,{multi:false, new:true})
-      return { ok: true, Form: updatedForm };
+      return { ok: true, form: updatedForm };
     } catch (err) {
       return { ok: false, error: err.message };
     }

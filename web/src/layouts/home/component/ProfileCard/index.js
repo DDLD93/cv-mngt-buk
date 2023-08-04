@@ -107,7 +107,7 @@ function ProfileCard({ name, email, gender, phone, faculty, department, staffAdm
           </MDTypography>
           <MDTypography mt={1} sx={{ fontSize: "13px" }} variant="p" color="black" fontWeight="bold">Status:
             <MDBadge badgeContent={formStatus ?formStatus:"not submitted"}
-              color={"dark"}
+              color={formStatus=="approved"?"success":formStatus=="submitted"?"warning":formStatus=="declined"?"error":"dark"}
               variant="gradient"
               size="sm" />
           </MDTypography>

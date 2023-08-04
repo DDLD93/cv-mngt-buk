@@ -130,8 +130,7 @@ export default function StepperHorizotal() {
       case 5:
         postData("Additional Information").
           then((res) => {
-            console.log({res})
-            // localStorage.setItem("user", JSON.stringify(res.payload))
+            localStorage.setItem("user", JSON.stringify(res.user))
             // setUser()
             Next();
             setActiveStepTitle("submitted");

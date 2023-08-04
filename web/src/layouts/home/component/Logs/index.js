@@ -21,7 +21,8 @@ function DocumentLogs() {
           m={0}
           sx={{ listStyle: "none" }}
         >
-          <Transaction
+          <p>History will Appear here</p>
+          {/* <Transaction
             color="error"
             icon="expand_more"
             name="Mal El Mahmud Sabinus"
@@ -41,7 +42,7 @@ function DocumentLogs() {
             name="Dr Ahmad Jakarda"
             description="27 March 2020, at 04:30 AM"
             value="pending"
-          />
+          /> */}
         </MDBox>
       </MDBox>
     </Card>

@@ -49,7 +49,8 @@ function Info() {
       id: user?._id,
       data: {
         additionalInfo: lists,
-        status: "submitted"
+        status: "submitted",
+        formStatus: "submitted"
       }
     });
     buttonState(false)

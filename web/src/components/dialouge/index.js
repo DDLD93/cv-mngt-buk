@@ -164,7 +164,27 @@ export function ScrollDialog(prop) {
         data.status == "success"
           ? notification("success", data.message)
           : notification("error", data.message);
-        console.log({data})
+          prop.reFetch()
+        setloading(false);
+        setOpen(false)
+      })
+      .catch((err) => {
+        notification("error", err.message);
+        console.log(err)
+        setloading(false);
+      });
+  };
+  const rejectForm = () => {
+    setloading(true);
+    fetch(`${config.formEndPoint}/api/v1/forms/reject/${prop.userId}`,{
+      method:"PUT"
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        data.status == "success"
+          ? notification("success", data.message)
+          : notification("error", data.message);
+          prop.reFetch()
         setloading(false);
         setOpen(false)
       })
@@ -293,6 +313,8 @@ export function ScrollDialog(prop) {
           <Button
             sx={{ color: "red" }}
             variant="text"
+            onClick={rejectForm}
+
           >
             Reject
           </Button>

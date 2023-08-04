@@ -47,6 +47,7 @@ function Tables() {
             if (user?.formStatus=="approved") return "success"
             if (user?.formStatus=="declined") return "error"
             if (user?.formStatus=="not submitted") return "dark"
+            if (user?.formStatus=="submitted") return "warning"
             if (user?.formStatus== null) return "dark"
           }
           return {
@@ -69,6 +70,7 @@ function Tables() {
               <Box component="div" sx={{ fontSize: "20px", display: "flex", gap: 1 }}>
                 <ScrollDialog
                   userId={user?._id}
+                  reFetch={fetchUsers}
                 />
                 {user.userRole == "admin" ? <EditDialog
                   props={user}

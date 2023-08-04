@@ -16,7 +16,7 @@ class UserController {
 
   async getCustom(userRole) {
     try {
-      const users = await User.find({userRole});
+      const users = await User.find({ userRole });
       return { ok: true, payload: users, message: `${userRole} users fetched`, error: null };
     } catch (err) {
       return { ok: false, payload: null, message: `unable to fetch ${userRole} users`, error: err };
@@ -65,7 +65,7 @@ class UserController {
   }
   async updateUserstatus(id, status) {
     try {
-      const user = await User.findByIdAndUpdate(id, {status}, { multi: false, new: true });
+      const user = await User.findByIdAndUpdate(id, { status, formStatus: status }, { multi: false, new: true });
       return { ok: true, payload: user, message: "operation succesiful", error: null };
     } catch (err) {
       return { ok: false, payload: null, message: "unable to update user", error: err };
