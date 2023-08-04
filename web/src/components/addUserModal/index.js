@@ -8,7 +8,7 @@ import MDTypography from "components/MDTypography";
 import BasicSelect from "components/forms/section/component/Select";
 import { StateContext } from "../../context/state"
 import config from "../../config";
-import { facultyList } from "./list.js"
+import { facultyList } from "./list.js";
 const style = {
   modal: {
     position: "absolute",
@@ -53,7 +53,7 @@ export default function BasicModal({ insertUser }) {
   const [department, setDepartment] = useState([])
   const [departmentList, setDepartmentList] = useState([])
   const [btn, setBtn] = useState(false)
-  const { notification, loadingState } = useContext(StateContext);
+  const { notification, loadingState, } = useContext(StateContext);
   // console.log("managerList><><><>>", managerList);
   async function addUser() {
     try {
@@ -84,7 +84,7 @@ export default function BasicModal({ insertUser }) {
         },
         body: JSON.stringify(user),
       });
-      
+
       return response.json();
     } catch (error) {
       return error
@@ -100,7 +100,7 @@ export default function BasicModal({ insertUser }) {
       });
       if (response.ok === "true") {
         notification("success", response.message)
-      }else{
+      } else {
         notification("error", response.message)
       }
       return response.json();
@@ -171,31 +171,31 @@ export default function BasicModal({ insertUser }) {
 
   // useEffect(() => {
 
-    // switch (role) {
-    //   case "admin":
-    //     if (title == null || fullName == null || email == null || phone == null || manager == null || faculty == null || department == null) {
-    //       console.log("admin btn state >>>>>>>", btn);
-    //       setBtn(true)
-    //     }
-    //     break;
-    //   case "staff admin":
-    //     if (title == null || fullName == null || email == null || phone == null || faculty == null || department == null) {
-    //       console.log("staff admin btn state >>>>>>>", btn);
-    //       setBtn(true)
-    //     }
-    //     break;
-    //   case "staff":
-    //     if (title == null || fullName == null || email == null || phone == null || manager == null) {
-    //       console.log("staff btn state >>>>>>>", btn);
-    //       setBtn(true)
-    //     }
-    //     break;
+  // switch (role) {
+  //   case "admin":
+  //     if (title == null || fullName == null || email == null || phone == null || manager == null || faculty == null || department == null) {
+  //       console.log("admin btn state >>>>>>>", btn);
+  //       setBtn(true)
+  //     }
+  //     break;
+  //   case "staff admin":
+  //     if (title == null || fullName == null || email == null || phone == null || faculty == null || department == null) {
+  //       console.log("staff admin btn state >>>>>>>", btn);
+  //       setBtn(true)
+  //     }
+  //     break;
+  //   case "staff":
+  //     if (title == null || fullName == null || email == null || phone == null || manager == null) {
+  //       console.log("staff btn state >>>>>>>", btn);
+  //       setBtn(true)
+  //     }
+  //     break;
 
-    //   default:
-    //     console.log("btn state >>>>>>>", btn);
-    //     setBtn(false)
-    //     break;
-    // }
+  //   default:
+  //     console.log("btn state >>>>>>>", btn);
+  //     setBtn(false)
+  //     break;
+  // }
 
 
   // }, [phone, email, role, title, manager, faculty, department, fullName])
@@ -287,7 +287,8 @@ export default function BasicModal({ insertUser }) {
               <Grid item xs={9} >
                 <Autocomplete
                   size="small"
-                  disabled={role == 'staff admin' && managerList.length && true}
+                  disabled={role == 'staff admin' || role == 'admin' && true}
+
                   getOptionLabel={(option) => (`${option?.department} (${option?.fullName})`)}
                   onChange={(e, v) => { setManager(v); console.log("v>>>>>><<<", v); }}
                   options={managerList}
@@ -305,7 +306,7 @@ export default function BasicModal({ insertUser }) {
                 />
               </Grid>
             </Grid>
-            <Grid sx={{ display: role != "staff" ? "block" : "none" }} item xs={12} >
+            <Grid sx={{ display: ["staff admin"].includes(role) ? "block" : "none" }} item xs={12} >
               <FacultySelect
                 label="Faculty"
                 cValue={faculty}
@@ -313,7 +314,7 @@ export default function BasicModal({ insertUser }) {
                 list={facultyList}
               />
             </Grid>
-            <Grid sx={{ display: role != "staff" ? "block" : "none" }} item xs={12} >
+            <Grid sx={{ display: ["staff admin"].includes(role) ? "block" : "none" }} item xs={12} >
               <DepartmentSelect
                 label="Department"
                 cValue={department}

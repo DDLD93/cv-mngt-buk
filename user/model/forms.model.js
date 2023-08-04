@@ -30,7 +30,7 @@ const Skills = new Schema({
 
 const formSchema = new Schema({
   userId: { type: String, },
-  status: { type: String, enum: ["not submitted", "incompleted", "submitted", "approved", "declined"], default: "not submitted" },
+  status: { type: String, enum: ["not submitted", "incompleted", "pending", "approved", "declined"], default: "not submitted" },
   staffAdmin: { type: String, },
   filePath: { type: String, },
   personalInfo: {

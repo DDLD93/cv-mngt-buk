@@ -28,7 +28,7 @@ class FormController {
       const form = await Form.findOne({userId:id});
       return { ok: true, form };
     } catch (err) {
-      return { ok: false, error: err };
+      return { ok: false, error: err.message };
     }
   }
 
@@ -46,7 +46,6 @@ class FormController {
   async updateForm(id, newData) {
     try {
       const updatedForm = await Form.findOneAndUpdate({userId:id},newData,{multi:false, new:true})
-      console.log(updatedForm)
       return { ok: true, Form: updatedForm };
     } catch (err) {
       return { ok: false, error: err.message };

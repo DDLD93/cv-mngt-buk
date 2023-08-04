@@ -71,6 +71,7 @@ function Home() {
         faculty={user.faculty}
         department={user.department}
         staffAdmin={user.staffAdmin&&user.staffAdmin.fullName}
+        formStatus={user.formStatus}
         />
          </Grid> 
       </MDBox>
