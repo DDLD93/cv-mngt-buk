@@ -40,7 +40,7 @@ export default function StateContextProvider({ children }) {
       method: "POST",
       body: formData
     });
-    if (response.ok === "true") {
+    if (response.ok === true) {
       // notification("success", response.message)
     } else {
       notification("error", response.message)
