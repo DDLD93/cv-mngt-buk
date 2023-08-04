@@ -99,7 +99,7 @@ export default function BasicModal({ insertUser }) {
         },
       });
       if (response.ok === "true") {
-        notification("success", response.message)
+        // notification("success", response.message)
       } else {
         notification("error", response.message)
       }

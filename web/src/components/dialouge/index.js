@@ -161,7 +161,7 @@ export function ScrollDialog(prop) {
     })
       .then((res) => res.json())
       .then((data) => {
-        data.status == "success"
+        data.ok == true
           ? notification("success", data.message)
           : notification("error", data.message);
           prop.reFetch()
@@ -181,7 +181,7 @@ export function ScrollDialog(prop) {
     })
       .then((res) => res.json())
       .then((data) => {
-        data.status == "success"
+        data.ok == true
           ? notification("success", data.message)
           : notification("error", data.message);
           prop.reFetch()
@@ -208,16 +208,17 @@ export function ScrollDialog(prop) {
 
     fetch(`${config.formEndPoint}/api/v1/forms/${prop.userId}`)
       .then((res) => res.json())
-      .then((data) => {
-       //console.log(`${config.formEndPoint}${data.filePath}`)
-        seteducation(data.education);
-        setwork(data.employment);
-        setmemberShip(data.membership);
-        setskills(data.skills);
-        setpersoanlInfo(data.personalInfo)
-        setAddInfo(data.additionalInfo)
-        setfilePath(`${config.formEndPoint}/api/v1/forms${data.filePath.slice(1)}`)
-        //console.log(AddInfo)
+      .then((response) => {
+        let data = response.form
+        if (data) {
+          seteducation(data.education);
+          setwork(data.employment);
+          setmemberShip(data.membership);
+          setskills(data.skills);
+          setpersoanlInfo(data.personalInfo)
+          setAddInfo(data.additionalInfo)
+          setfilePath(`${config.formEndPoint}/api/v1/forms${data.filePath.slice(1)}`)
+        }
       })
       .catch((err) => {
         notification("error", err.message);
