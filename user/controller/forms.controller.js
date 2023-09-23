@@ -25,27 +25,47 @@ class FormController {
 
   async getByUserID(id) {
     try {
-      const form = await Form.findOne({userId:id});
+      const form = await Form.findOne({ userId: id });
       return { ok: true, form };
     } catch (err) {
       return { ok: false, error: err.message };
     }
   }
 
-  async addForm(data,formPath) {
+  // async addForm(data,formPath) {
+  //   try {
+  //     const newForm = new Form(data);
+  //     newForm.filePath = formPath
+  //     const response = await newForm.save();
+  //     return { ok: true, response};
+  //   } catch (err) {
+  //     return { ok: false, error: err };
+  //   }
+  // }
+
+  async addForm(id, formPath) {
     try {
-      const newForm = new Form(data);
+      const newForm = new Form({ userId: id, status: "pending" });
       newForm.filePath = formPath
       const response = await newForm.save();
-      return { ok: true, response};
+      return { ok: true, response };
     } catch (err) {
       return { ok: false, error: err };
+    }
+  }
+  async addPesonalForm(data) {
+    try {
+      const newForm = new Form(data);
+      const response = await newForm.save();
+      return { ok: true, response };
+    } catch (err) {
+      return { ok: false, error: err.message };
     }
   }
 
   async updateForm(id, newData) {
     try {
-      const updatedForm = await Form.findOneAndUpdate({userId:id},newData,{multi:false, new:true})
+      const updatedForm = await Form.findOneAndUpdate({ userId: id }, newData, { multi: false, new: true })
       return { ok: true, form: updatedForm };
     } catch (err) {
       return { ok: false, error: err.message };

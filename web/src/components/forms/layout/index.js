@@ -30,7 +30,7 @@ export default function StepperHorizotal() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [activeStepTitle, setActiveStepTitle] = React.useState("Personal Info");
   const [completed, setCompleted] = React.useState({});
-  const { disable, loading, loadingState, postData, postForm, user, notification, setUser } = useContext(StateContext);
+  const { disable, loading, loadingState, postData, postForm, user, notification, postPersonalData,setUser } = useContext(StateContext);
 
   const totalSteps = () => {
     return steps.length;
@@ -77,9 +77,15 @@ export default function StepperHorizotal() {
 
     switch (activeStep) {
       case 0:
-        postForm().then(() => {
-          Next();
-          setActiveStepTitle("Education");
+        postPersonalData().then((data) => {
+          if(data.ok){
+            Next();
+            setActiveStepTitle("Education");
+
+          }else{
+            notification("error", data.error)
+            loadingState(false)
+          }
         }).catch((err) => {
           notification("error", err.message)
           loadingState(false)

@@ -56,8 +56,8 @@ function PersonalInfo() {
       case "statement":
         setstatement(value)
         break;
-      case "file":
-        setFile(e.target.files[0])
+      // case "file":
+      //   setFile(e.target.files[0])
         break;
       default:
         break;
@@ -67,7 +67,7 @@ function PersonalInfo() {
   const readyState = () => {
     console.log("ready state ran");
     setFormPost({
-      file,
+      // file,
       data: {
         userId: user?._id,
         personalInfo: {
@@ -99,8 +99,8 @@ function PersonalInfo() {
       email == "" ||
       phone == "" ||
       address == "" ||
-      statement == "" ||
-      !file
+      statement == "" 
+      // !file
     ) {
       buttonState(true);
       setFormPost(undefined);
@@ -108,7 +108,7 @@ function PersonalInfo() {
       readyState()
       buttonState(false);
     }
-  }, [firstName, lastName, otherName, email, phone, address, statement, file]);
+  }, [firstName, lastName, otherName, email, phone, address, statement]);
 
   return (
     <Container fixed>
@@ -199,7 +199,7 @@ function PersonalInfo() {
           size="small"
           name="statement"
         />
-        <MDButton
+        {/* <MDButton
           sx={{ maxWidth: 120, color: "white" }}
           color="info"
           size="small"
@@ -214,7 +214,7 @@ function PersonalInfo() {
             type="file"
             hidden />
         </MDButton>
-        <span>{file ? file.name : ""}</span>
+        <span>{file ? file.name : ""}</span> */}
       </Box>
     </Container>
   );

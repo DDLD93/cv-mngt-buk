@@ -24,12 +24,32 @@ module.exports = (express, UPLOADS) => {
   api = express.Router();
 
   api.post("/", upload.single("file"), async (req, res) => {
-    let body = JSON.parse(req.body.meta)
-    let status = await FormCtrl.addForm(body, req.filePath)
+    let id = req.body.userId
+    let status = await FormCtrl.addForm(id, req.filePath)
+    if (status.ok) {
+      let { ok, message, payload } = await UserCtrl.updateUserstatus(id, "submitted")
+      res.status(200).json({ok, message, payload});
+    } else {
+      res.status(500).json(status);
+    }
+  });
+  api.post("/", async (req, res) => {
+    let body = JSON.parse(req.body)
+    let status = await FormCtrl.addForm(body)
     if (status.ok) {
       res.status(200).json(status.response);
     } else {
       res.status(500).json(status.error);
+    }
+  });
+
+  api.post("/personal", async (req, res) => {
+    let body = req.body
+    let status = await FormCtrl.addPesonalForm(body)
+    if (status.ok) {
+      res.status(200).json(status);
+    } else {
+      res.status(500).json(status);
     }
   });
 

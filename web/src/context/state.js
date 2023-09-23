@@ -61,6 +61,24 @@ export default function StateContextProvider({ children }) {
     }
     return response.json()
   }
+  async function postPersonalData(url = "") {
+    setLoading(true);
+    const response = await fetch(`${config.formEndPoint}/api/v1/forms/personal`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formPostData.data),
+    });
+    if (response.ok === true) {
+      // notification("success", response.message)
+    } else {
+      notification("error", response.message)
+    }
+    setLoading(false);
+    return response.json();
+  }
+  
   async function postData(url = "") {
     setLoading(true);
     const response = await fetch(`${config.formEndPoint}/api/v1/forms/${formPostData?.id}`, {
@@ -131,6 +149,7 @@ export default function StateContextProvider({ children }) {
     loadingState,
     setFormPost,
     postData,
+    postPersonalData,
     login,
   };
 
