@@ -17,7 +17,7 @@ module.exports = async (cv, filename, UPLOADS) => {
     
 
     // Launch Puppeteer
-    const browser = await puppeteer.launch({headless: true});
+    const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox']});
     const page = await browser.newPage();
 
     // Set content to the page and create PDF
