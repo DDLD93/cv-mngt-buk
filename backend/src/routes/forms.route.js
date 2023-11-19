@@ -152,12 +152,12 @@ module.exports = (express, UPLOADS) => {
     ]
     let response = await Promise.all(promiseArr)
     let formData = response[0].data
-    console.log({ response })
+    // console.log({ response })
     let { ok, message } = await makePDF(formData, filename, UPLOADS)
     if (ok) {
       res.status(200).json({ ok: true, data: response[1].data });
     } else {
-      res.status(500).json({ ok: false, data: response[1].message });
+      res.status(500).json({ ok: false,message });
     }
   });
 
