@@ -14,8 +14,8 @@ RUN sudo apt-get install -y fontconfig
 RUN sudo apt-get install -y libfontconfig
 
 
-RUN sudo npm install -g phantomjs-prebuilt 
-RUN sudo npm install -g html-pdf
+RUN sudo npm install phantomjs-prebuilt 
+RUN sudo npm install html-pdf
 RUN sudo npm install 
 
 COPY . .
