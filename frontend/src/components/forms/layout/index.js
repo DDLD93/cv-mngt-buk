@@ -159,9 +159,9 @@ export default function StepperHorizotal() {
         submitForm("Additional Information").
           then((data) => {
             if(data.ok){
-              localStorage.setItem("user", JSON.stringify(data.data))
-              Next();
-              setActiveStepTitle("submitted");
+              // localStorage.setItem("user", JSON.stringify(data.data))
+              // Next();
+              // setActiveStepTitle("submitted");
             }else{
               notification("error", data.message)
               loadingState(false)

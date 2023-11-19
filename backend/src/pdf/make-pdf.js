@@ -1,39 +1,45 @@
-const fs = require('fs');
 const _ = require('lodash');
-const pdf = require('html-pdf');
+const fs = require('fs');
+const puppeteer = require('puppeteer');
 
 module.exports = async (cv, filename, UPLOADS) => {
   try {
     const cvObj = normalizeData(cv);
 
     // Read the HTML template file
-    const template = fs.readFileSync(__dirname + '/template.html', 'utf8');
+    const templateHtml = fs.readFileSync(__dirname + '/template.html', 'utf8');
 
-    // Compile lodash template
-    const compiledTemplate = _.template(template);
+    // Compile Handlebars template
+    const template = _.template(templateHtml);
 
     // Generate HTML by passing the data to the compiled template
-    const generatedHTML = compiledTemplate(cvObj);
+    const generatedHTML = template(cvObj);
 
-    // HTML to PDF conversion options
-    const options = { format: 'Letter' };
+    // Launch Puppeteer
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
 
-    // Convert HTML to PDF
+    // Set content to the page and create PDF
+    await page.setContent(generatedHTML);
+    await page.pdf({ path: `${UPLOADS}/${filename}`, format: 'Letter' });
 
-    return await new Promise((resolve, reject) => {
-      pdf.create(generatedHTML, options).toFile(`${UPLOADS}/${filename}`, (err, res) => {
-        console.log(res)
-        if (err) {
-          reject({ ok: false, message: err.message });
-        } else {
-          resolve({ ok: true, data: "uploads/" + filename });
-        }
-      });
-    });
+    // Close browser
+    await browser.close();
+
+    return { ok: true, data: `uploads/${filename}` };
   } catch (err) {
     return { ok: false, message: err.message };
   }
 };
+
+
+
+
+
+
+
+
+
 
 function normalizeData(data) {
   const normalizedData = {
@@ -57,7 +63,7 @@ function normalizeData(data) {
       end: job.end ? new Date(job.end).toLocaleDateString() : null,
     })),
     membership: data.membership.map(mem => ({
-      organisation: mem.organisation || '',
+      organisation: mem.organization || '',
       title: mem.title || '',
       start: mem.start ? new Date(mem.start).toLocaleDateString() : null,
     })),
