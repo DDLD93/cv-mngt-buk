@@ -154,8 +154,6 @@ module.exports = (express, UPLOADS) => {
     let formData = response[0].data
     console.log({ response })
     let { ok, message } = await makePDF(formData, filename, UPLOADS)
-    console.log({ ok, message })
-
     if (ok) {
       res.status(200).json({ ok: true, data: response[1].data });
     } else {

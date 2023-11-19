@@ -92,7 +92,7 @@ export default function StateContextProvider({ children }) {
       },
       body: JSON.stringify(formPostData.data),
     });
-    // setLoading(false);
+    setLoading(false);
     return response.json();
   }
   async function submitForm(url = "") {

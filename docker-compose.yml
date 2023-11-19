@@ -16,44 +16,21 @@ services:
     image: mongo:latest
     restart: always
     container_name: 'mongodb'
-    ports:
-        - 27017:27017
     volumes:
       - $PWD/STORAGE/mongodb:/data/db
     networks:
         - ujere_net
-  user:
+  api:
     restart: always
-    build: ./user
+    build: ./backend
     depends_on:
       - database
-    container_name: 'userAuth'
+    container_name: 'api'
     volumes:
      - $PWD/STORAGE/uploads:/app/uploads
     environment:
-      PORT: "${PORT}"
-      MONGODB_HOST: "${MONGODB_HOST}"
-    networks:
-        - ujere_net
-  form:
-    restart: always
-    build: ./forms
-    depends_on:
-      - database
-    volumes:
-     - $PWD/STORAGE/uploads:/app/uploads
-    container_name: 'forms'
-    environment:
-      PORT: "${PORT}"
-      MONGODB_HOST: "${MONGODB_HOST}"
-    networks:
-        - ujere_net
-  web:
-    restart: always
-    build: ./web
-    depends_on:
-      - database
-    container_name: 'web'
+      APP_PORT: "${APP_PORT}"
+      MONGO_URI: "${MONGO_URI}"
     networks:
         - ujere_net
 networks:

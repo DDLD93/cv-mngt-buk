@@ -90,7 +90,6 @@ module.exports = (express, UPLOADS) => {
   api.post("/login", async (req, res) => {
     let body = req.body
     let { ok, data, message } = await userCtrl.login(body)
-    console.log({ ok, data, message })
     if (!ok) {
       res.status(400).json({ ok, message });
     } else {

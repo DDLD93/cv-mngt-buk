@@ -24,6 +24,9 @@ app.use(express.json({limit: '50mb'}))
 app.use("/api/v1/user", require("./routes/user.route")(express,UPLOADS));
 app.use("/api/v1/forms", require("./routes/forms.route")(express,UPLOADS));
 
+app.use("/uploads/",express.static(UPLOADS))
+
+
 // app.use(function(req, res, next){
 //   res.status(404).sendFile(path.join(__dirname, 'build', 'index.html'));
 // });

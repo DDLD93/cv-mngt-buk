@@ -170,7 +170,6 @@ export function ScrollDialog(prop) {
       })
       .catch((err) => {
         notification("error", err.message);
-        console.log(err)
         setloading(false);
       });
   };
@@ -209,7 +208,10 @@ export function ScrollDialog(prop) {
     fetch(`${config.baseUrl}/api/v1/forms/${prop.userId}`)
       .then((res) => res.json())
       .then((response) => {
-        let data = response.form
+        response.ok == true
+        ? null
+        : notification("error", response.message);
+        let data = response.data
         if (data) {
           seteducation(data.education);
           setwork(data.employment);
@@ -217,7 +219,7 @@ export function ScrollDialog(prop) {
           setskills(data.skills);
           setpersoanlInfo(data.personalInfo)
           setAddInfo(data.additionalInfo)
-          setfilePath(`${config.baseUrl}/api/v1/forms${data.filePath.slice(1)}`)
+          setfilePath(`${config.baseUrl}/${data.filePath}`)
         }
       })
       .catch((err) => {
@@ -237,10 +239,10 @@ export function ScrollDialog(prop) {
         visibility
       </Icon>
       <Dialog open={open} onClose={handleClose} scroll={scroll} maxWidth="md">
-        <DialogTitle id="scroll-dialog-title">CV Data</DialogTitle>
+        <DialogTitle id="scroll-dialog-title">Document Preview</DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
           <DialogContentText p={3} ref={descriptionElementRef} tabIndex={-1}>
-            <h4 style={{ marginBottom: 15 }}>Personal Information</h4>
+            {/* <h4 style={{ marginBottom: 15 }}>Personal Information</h4>
             {PersonalInfoRender(persoanlInfo)}
             <h4 style={{ marginTop: 35 }}>Education History</h4>
             <Grid container spacing={4}>
@@ -298,16 +300,13 @@ export function ScrollDialog(prop) {
                   date={e.date}
                 />
               ))}
-            </Grid>
+            </Grid> */}
 
 
-            <div style={{marginTop:5}} >
-              <h3 style={{ margin: 20, textAlign: "center", color: "black" }}>Document Preview</h3>
               <hr />
               <PDFrender 
                 url={filePath}
               />
-            </div>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
