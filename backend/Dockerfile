@@ -6,9 +6,8 @@ RUN su -
 RUN  apt-get update
 RUN apt-get install sudo -y
 RUN sudo apt install curl -y
-RUN curl -sL https://deb.nodesource.com/setup_17.x -o nodesource_setup.sh
-RUN sudo bash nodesource_setup.sh
-RUN sudo apt install nodejs -y 
+RUN sudo apt install uzip -y
+RUN curl -fsSL https://fnm.vercel.app/install | bash
 RUN sudo apt-get install -y fontconfig
 RUN sudo apt-get install -y libfontconfig
 
