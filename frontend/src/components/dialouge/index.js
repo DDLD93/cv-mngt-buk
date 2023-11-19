@@ -1,5 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Button from "@mui/material/Button";
+import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -45,8 +46,8 @@ export function SuspendDialog(prop) {
   const handleClose = () => {
     setOpen(false);
   };
-  
-  
+
+
 
   return (
     <div>
@@ -75,7 +76,7 @@ export function SuspendDialog(prop) {
     </div>
   );
 }
-export function EditDialog({fullName,manager,email,phone}) {
+export function EditDialog({ fullName, manager, email, phone }) {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -93,12 +94,12 @@ export function EditDialog({fullName,manager,email,phone}) {
         open={open}
         fullWidth
         onClose={handleClose}>
-        <DialogTitle sx={{mb:5}} id="responsive-dialog-title">
+        <DialogTitle sx={{ mb: 5 }} id="responsive-dialog-title">
           {"Account Modification"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <Grid sx={{p:2}} gap={3} container >
+            <Grid sx={{ p: 2 }} gap={3} container >
               <Grid >
                 <TextField defaultValue={fullName} label="Full Name" />
               </Grid>
@@ -114,20 +115,20 @@ export function EditDialog({fullName,manager,email,phone}) {
 
               <Grid container flexDirection="row" xs={12} item  >
                 <Grid item xs={6}>
-                 <TextArea sx={{width:50}} label="Leave blank to auto generate"/>
+                  <TextArea sx={{ width: 50 }} label="Leave blank to auto generate" />
                 </Grid>
                 <Grid xs={3}>
-                <MDButton
-                variant="gradient"
-                >
-                Reset Password
-                </MDButton>
+                  <MDButton
+                    variant="gradient"
+                  >
+                    Reset Password
+                  </MDButton>
 
                 </Grid>
               </Grid>
-              <Grid xs={6}  item  >
+              <Grid xs={6} item  >
               </Grid>
-              <Grid xs={6}  item  >
+              <Grid xs={6} item  >
               </Grid>
 
 
@@ -143,8 +144,8 @@ export function EditDialog({fullName,manager,email,phone}) {
 export function ScrollDialog(prop) {
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
-  const [loading, setloading] = useState(false);
-  const [education, seteducation] = useState([]);
+  const [fielLoading, setFielLoading] = useState(true);
+  const [btnLoading, setBtnLoading] = useState(false);
   const [work, setwork] = useState([]);
   const [memberShip, setmemberShip] = useState([]);
   const [skills, setskills] = useState([]);
@@ -156,15 +157,15 @@ export function ScrollDialog(prop) {
   const { user, notification } = useContext(StateContext);
   const reviewForm = () => {
     setloading(true);
-    fetch(`${config.baseUrl}/api/v1/forms/approve/${prop.userId}`,{
-      method:"PUT"
+    fetch(`${config.baseUrl}/api/v1/forms/approve/${prop.userId}`, {
+      method: "PUT"
     })
       .then((res) => res.json())
       .then((data) => {
         data.ok == true
           ? notification("success", data.message)
           : notification("error", data.message);
-          prop.reFetch()
+        prop.reFetch()
         setloading(false);
         setOpen(false)
       })
@@ -175,15 +176,15 @@ export function ScrollDialog(prop) {
   };
   const rejectForm = () => {
     setloading(true);
-    fetch(`${config.baseUrl}/api/v1/forms/reject/${prop.userId}`,{
-      method:"PUT"
+    fetch(`${config.baseUrl}/api/v1/forms/reject/${prop.userId}`, {
+      method: "PUT"
     })
       .then((res) => res.json())
       .then((data) => {
         data.ok == true
           ? notification("success", data.message)
           : notification("error", data.message);
-          prop.reFetch()
+        prop.reFetch()
         setloading(false);
         setOpen(false)
       })
@@ -204,21 +205,16 @@ export function ScrollDialog(prop) {
 
   const descriptionElementRef = React.useRef(null);
   React.useEffect(() => {
-
+    setBtnLoading(true)
     fetch(`${config.baseUrl}/api/v1/forms/${prop.userId}`)
       .then((res) => res.json())
       .then((response) => {
         response.ok == true
-        ? null
-        : notification("error", response.message);
+          ? null
+          : notification("error", response.message);
         let data = response.data
         if (data) {
-          seteducation(data.education);
-          setwork(data.employment);
-          setmemberShip(data.membership);
-          setskills(data.skills);
-          setpersoanlInfo(data.personalInfo)
-          setAddInfo(data.additionalInfo)
+          setBtnLoading(false)
           setfilePath(`${config.baseUrl}/${data.filePath}`)
         }
       })
@@ -232,81 +228,29 @@ export function ScrollDialog(prop) {
       }
     }
   }, [open]);
+  useEffect(() => {
+
+    filePath ? setFielLoading(false) : setFielLoading(true)
+  }, [filePath])
+
 
   return (
     <div>
       <Icon sx={{ cursor: "pointer" }} onClick={handleClickOpen("body")}>
         visibility
       </Icon>
+
       <Dialog open={open} onClose={handleClose} scroll={scroll} maxWidth="md">
         <DialogTitle id="scroll-dialog-title">Document Preview</DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
-          <DialogContentText p={3} ref={descriptionElementRef} tabIndex={-1}>
-            {/* <h4 style={{ marginBottom: 15 }}>Personal Information</h4>
-            {PersonalInfoRender(persoanlInfo)}
-            <h4 style={{ marginTop: 35 }}>Education History</h4>
-            <Grid container spacing={4}>
-              <Grid item xs={12}>
-                {education?.map((e) => (
-                  <EducationHistory
-                    institute={e?.institution}
-                    qualification={e?.qualification}
-                    started={e?.start}
-                    ended={e?.end}
-                  />
-                ))}
-              </Grid>
-            </Grid>
-            <h4 style={{ marginTop: 35 }}>Work History</h4>
-            <Grid container spacing={4}>
-              <Grid item xs={12}>
-                {work?.map((e) => (
-                  <WorkHistory
-                    orgnisation={e?.organisation}
-                    title={e?.title}
-                    started={e?.start}
-                    ended={e?.end}
-                  />
-                ))}
-              </Grid>
-            </Grid>
-            <h4 style={{ marginTop: 35 }}>MemberShip</h4>
-            <Grid container spacing={4}>
-              <Grid item xs={12}>
-                {memberShip?.map((e) => (
-                  <Membership
-                    orgnisation={e.organisation}
-                    title={e.title}
-                    started={e.start}
-                    ended={""}
-                  />
-                ))}
-              </Grid>
-            </Grid>
-            <h4 style={{ marginTop: 35 }}>Skills</h4>
-            <Grid container spacing={1} flexDirection="row">
-              {skills?.map((e) => (
-                <Skills
-                  skill={e.skill}
-                />
-              ))}
-            </Grid>
-            <h4 style={{ marginTop: 35, marginBottom: 35 }}>Additional Information</h4>
-            <Grid container spacing={1}  >
-              {AddInfo?.map((e) => (
-                <AddInformation
-                  info={e.information}
-                  category={e.category}
-                  date={e.date}
-                />
-              ))}
-            </Grid> */}
+          <DialogContentText sx={{ width: 500, height: 500 }} p={3} ref={descriptionElementRef} tabIndex={-1}>
 
 
-              <hr />
-              <PDFrender 
-                url={filePath}
-              />
+
+            <hr />
+            {filePath ? <PDFrender
+              url={filePath}
+            /> : <CircularProgress thickness={1} sx={{ top: "30%", left: "30%" ,position:"absolute"}} size={200} disableShrink />}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -314,6 +258,7 @@ export function ScrollDialog(prop) {
             sx={{ color: "red" }}
             variant="text"
             onClick={rejectForm}
+            disabled={btnLoading}
 
           >
             Reject
@@ -323,6 +268,8 @@ export function ScrollDialog(prop) {
             onClick={reviewForm}
             autoFocus
             variant="text"
+            disabled={btnLoading}
+
           >
             Approve
           </Button>
