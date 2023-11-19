@@ -27,7 +27,7 @@ services:
       - database
     container_name: 'api'
     volumes:
-     - $PWD/STORAGE/uploads:/app/uploads
+     - $PWD/STORAGE/uploads:/app/src/uploads
     environment:
       APP_PORT: "${APP_PORT}"
       MONGO_URI: "${MONGO_URI}"
