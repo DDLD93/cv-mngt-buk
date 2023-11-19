@@ -11,6 +11,8 @@ build
 /user/uploads
 # testing
 /coverage
+STORAGE
+/STORAGE
 
 # production
 
