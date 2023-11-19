@@ -6,7 +6,7 @@ RUN su -
 RUN  apt-get update
 RUN apt-get install sudo -y
 RUN sudo apt install curl -y
-RUN sudo apt install uzip -y
+RUN sudo apt install unzip -y
 RUN curl -fsSL https://fnm.vercel.app/install | bash
 RUN sudo apt-get install -y fontconfig
 RUN sudo apt-get install -y libfontconfig
