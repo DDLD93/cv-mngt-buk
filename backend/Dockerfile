@@ -7,7 +7,6 @@ RUN  apt-get update
 RUN apt-get install sudo -y
 RUN sudo apt install curl -y
 RUN curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh
-RUN chmod 500 nsolid_setup_deb.sh./nsolid_setup_deb.sh 21
 RUN chmod 500 nsolid_setup_deb.sh
 RUN ./nsolid_setup_deb.sh 21
 RUN apt-get install nodejs -y
