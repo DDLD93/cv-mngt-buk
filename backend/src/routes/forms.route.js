@@ -35,7 +35,7 @@ module.exports = (express, UPLOADS) => {
     }
   });
   api.post("/", async (req, res) => {
-    let body = JSON.parse(req.body)
+    let body = req.body
     let status = await FormCtrl.addForm(body)
     if (status.ok) {
       res.status(200).json(status.response);

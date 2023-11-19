@@ -30,19 +30,19 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 
 // Billing page components
-import PaymentMethod from "layouts/document/components/PaymentMethod";
-import Invoices from "layouts/document/components/Invoices";
-import BillingInformation from "layouts/document/components/BillingInformation";
-import Transactions from "layouts/document/components/Transactions";
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import StepperHorizotal from "components/forms/layout";
 import MDButton from "components/MDButton";
 import { Divider } from "@mui/material";
 import { StateContext } from "../../context/state";
 import config from "../../config";
+import { useNavigate } from "react-router-dom";
+
 
 
 
@@ -82,31 +82,56 @@ const style = {
 function TransitionsModal({ setIsForm }) {
   const [open, setOpen] = React.useState(true);
   const [file, setFile] = React.useState(null)
+  const [doing, setDoing] = React.useState(false)
+  const [errMessage, setErrMessage] = React.useState("")
+
+  const router = useNavigate()
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  
 
   const { notification, buttonState, setFormPost, formPost, user, } = React.useContext(StateContext);
+  const handleClose = () => {
+    router(-1)
+    setOpen(false)
+  };
+
+  async function handleUpload() {
+    setDoing(true)
+    try {
+      let formData = new FormData();
+      formData.append("file", file)
+      formData.append("userId", user?._id,)
+      // setLoading(true);
+      const response = await fetch(`${config.baseUrl}/api/v1/forms/upload`, {
+        method: "POST",
+        body: formData
+      });
+      setDoing(false)
+      return response.json()
+    } catch (error) {
+      setDoing(false)
+      return error.message
+    }
+
+  }
 
 
   const handleFormChange = (e) => {
     setFile(e.target.files[0])
   }
-  React.useEffect(async () => {
+  React.useEffect(() => {
+    console.log("no file")
     if (file) {
-      let formData = new FormData();
-      formData.append("file", file)
-      formData.append("userId", user?._id,)
-      // setLoading(true);
-      const response = await fetch(`${config.baseUrl}/api/v1/forms`, {
-        method: "POST",
-        body: formData
-      });
-      if (response.ok === true) {
-        // notification("success", response.message)
-      } else {
-        notification("error", response.message)
-      }
-      // setLoading(false);
+      handleUpload().then(data => {
+        if (data.ok) {
+          handleClose()
+
+        } else {
+          setErrMessage(data.messsage)
+        }
+      }).catch(error => {
+        setErrMessage(error.messsage)
+      })
     }
 
     // return response.json();
@@ -132,6 +157,11 @@ function TransitionsModal({ setIsForm }) {
       >
         <Fade in={open}>
           <Box sx={style}>
+
+            {!doing? <>
+            <IconButton sx={{ position: "absolute", left: "90%", top: "5%" }} size="small">
+              <CloseIcon onClick={handleClose} color="error" fontSize="small" />
+            </IconButton>
             <Typography mb={3} fontSize={15} >Upload a PDF format of your document</Typography>
             <MDButton
               sx={{ maxWidth: 120, color: "white" }}
@@ -148,9 +178,14 @@ function TransitionsModal({ setIsForm }) {
                 type="file"
                 hidden />
             </MDButton>
+            <Typography color={"error"} >{errMessage}</Typography>
             <Divider />
             <Typography fontSize={11} >OR</Typography>
             <MDButton onClick={() => setIsForm(true)} disableElevation color="info" variant="text">Enter Manually</MDButton>
+            </> :
+             <CircularProgress thickness={1} sx={{ top: "50%", left: "0%" ,position:"relative"}} size={150} disableShrink />
+
+            }
           </Box>
         </Fade>
       </Modal>

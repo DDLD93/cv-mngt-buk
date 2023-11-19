@@ -91,7 +91,6 @@ class UserController {
   async updateUserstatus(id, status) {
     try {
       const user = await User.findByIdAndUpdate(id, { status, formStatus: status }, { multi: false, new: true });
-      console.log({user,id})
       return { ok: true, data: user };
     } catch (err) {
       return { ok: false, message: err.message };
