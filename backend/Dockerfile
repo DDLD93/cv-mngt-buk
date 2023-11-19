@@ -6,8 +6,11 @@ RUN su -
 RUN  apt-get update
 RUN apt-get install sudo -y
 RUN sudo apt install curl -y
-RUN sudo apt install unzip -y
-RUN curl -fsSL https://fnm.vercel.app/install | bash
+RUN curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh
+RUN chmod 500 nsolid_setup_deb.sh./nsolid_setup_deb.sh 21
+RUN chmod 500 nsolid_setup_deb.sh
+RUN ./nsolid_setup_deb.sh 21
+RUN apt-get install nodejs -y
 RUN sudo apt-get install -y fontconfig
 RUN sudo apt-get install -y libfontconfig
 
