@@ -152,6 +152,7 @@ export function ScrollDialog(prop) {
   const [persoanlInfo, setpersoanlInfo] = useState([])
   const [AddInfo, setAddInfo] = useState([])
   const [filePath, setfilePath] = useState(null)
+  const [loading, setloading] = useState(false);
 
   var [form, setForm] = useState([]);
   const { user, notification } = useContext(StateContext);
@@ -250,7 +251,7 @@ export function ScrollDialog(prop) {
             <hr />
             {filePath ? <PDFrender
               url={filePath}
-            /> : <CircularProgress thickness={1} sx={{ top: "30%", left: "30%" ,position:"absolute"}} size={200} disableShrink />}
+            /> : <CircularProgress thickness={1} sx={{ top: "30%", left: "30%", position: "absolute" }} size={200} disableShrink />}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
