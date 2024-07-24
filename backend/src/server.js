@@ -14,12 +14,6 @@ console.log(process.env.APP_PORT)
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({limit: '50mb'}))
-// connecting to databas
-
-// app.use(express.static(path.join(__dirname, 'build')));
-// app.get('/', function (req, res) {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
 
 app.use("/api/v1/user", require("./routes/user.route")(express,UPLOADS));
 app.use("/api/v1/forms", require("./routes/forms.route")(express,UPLOADS));

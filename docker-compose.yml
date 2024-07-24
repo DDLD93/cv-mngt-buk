@@ -1,38 +1,39 @@
-version: "3.8"
 services:
-  proxy:
-    image: 'jc21/nginx-proxy-manager:latest'
+  web:
+    build: ./forntend
     restart: unless-stopped
-    ports:
-      - '80:80'
-      - '81:81'
-      - '443:443'
-    volumes:
-      - $PWD/STORAGE/pm:/data
-      - $PWD/STORAGE/letsencrypt:/etc/letsencrypt
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.abnaibi-web-route.rule=Host(`cv.ddldlabs.com.ng`)
+      - traefik.http.routers.abnaibi-web-route.tls=true
+      - traefik.http.routers.abnaibi-web-route.tls.certresolver=myresolver
+      - traefik.http.routers.abnaibi-web-route.middlewares=https-redirect@docker
+      - traefik.http.services.abnaibi.loadbalancer.server.port=80
+      - traefik.http.routers.abnaibi-web-http-to-https.rule=Host(`cv.ddldlabs.com.ng`)
+      - traefik.http.routers.abnaibi-web-http-to-https.entrypoints=web
+      - traefik.http.routers.abnaibi-web-http-to-https.middlewares=https-redirect
     networks:
-      - ujere_net
-  database:
-    image: mongo:latest
-    restart: always
-    container_name: 'mongodb'
-    volumes:
-      - $PWD/STORAGE/mongodb:/data/db
-    networks:
-        - ujere_net
+      - ddld-net
   api:
     restart: always
     build: ./backend
-    depends_on:
-      - database
-    container_name: 'api'
     volumes:
      - $PWD/STORAGE/uploads:/app/src/uploads
     environment:
       APP_PORT: "${APP_PORT}"
       MONGO_URI: "${MONGO_URI}"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.abnaibi-web-route.rule=Host(`api.cv.ddldlabs.com.ng`)
+      - traefik.http.routers.abnaibi-web-route.tls=true
+      - traefik.http.routers.abnaibi-web-route.tls.certresolver=myresolver
+      - traefik.http.routers.abnaibi-web-route.middlewares=https-redirect@docker
+      - traefik.http.services.abnaibi.loadbalancer.server.port=3000
+      - traefik.http.routers.abnaibi-web-http-to-https.rule=Host(`api.cv.ddldlabs.com.ng`)
+      - traefik.http.routers.abnaibi-web-http-to-https.entrypoints=web
+      - traefik.http.routers.abnaibi-web-http-to-https.middlewares=https-redirect
     networks:
-        - ujere_net
+      - ddld-net
 networks:
   ujere_net:
     driver: bridge
