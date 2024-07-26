@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 // const {mailer, welcomeMsg} = require("../controller/mailer")
 
 class UserController {
-  constructor() { }
+  constructor() { this.#init()}
   async login(body) {
     try {
       const user = await User.findOne({ email: body.email });
@@ -20,7 +20,7 @@ class UserController {
         fullName: user.fullName,
         userType: user.userType,
         staffAdmin: user.staffAdmin
-      }, jwtSecret, { expiresIn: '24h' })
+      }, jwtSecret)
       return { ok: true, data: { user, token } }
     } catch (err) {
       return { ok: false, message: err.message }
@@ -104,5 +104,34 @@ class UserController {
       return { ok: false, message: err.mesage };
     }
   }
+
+  async #init() {
+    try {
+      let adminUser = await User.findOne({ email: "admin@cv-buk.edu.ng" });
+      if (adminUser) {
+        console.log("Admin User found >>> Skipping seeding ::::");
+        return;
+      }
+      await User.ensureIndexes();
+      let adminObj = {
+        email: "admin@cv-buk.edu.ng",
+        password: await  bcrypt.hash("root", 10),
+        userRole: "admin",
+        firstName: "super",
+        lastName: "admin",
+        otherName: "user",
+        fullName: "super admin user",
+        phone: "07055793353",
+        status: "active"
+      };
+      let newAdmin = new User(adminObj);
+      let admin = await newAdmin.save({ isAdmin: true });
+      console.log("Seeded new admin account ::::", admin);
+    } catch (error) {
+      console.log("error seeding admin account ::::", error.message);
+    }
+  }
 }
+
+
 module.exports = new UserController();

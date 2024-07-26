@@ -1,19 +1,30 @@
-FROM ubuntu:latest
+FROM node:21.7.1
 LABEL author="Umar Adamu Jere"
 WORKDIR /app
+RUN apt-get update -y && apt-get install -y \
+libxcomposite1 \
+libnss3 \
+libatk1.0-0 \
+libatk-bridge2.0-0 \
+libcups2 \
+libxkbcommon0 \
+libgbm1 \
+libasound2 \
+libxdamage1 \
+libxrandr2 \
+libxshmfence1 \
+libxss1 \
+libxtst6 \
+libnss3-dev \
+libnspr4 \
+libpangocairo-1.0-0 \
+libpangoft2-1.0-0 \
+libpango-1.0-0 \
+libcairo2 \
+libcairo-gobject2 \
+libxfixes3
 COPY package.json .
-RUN su -
-RUN  apt-get update
-RUN apt-get install sudo -y
-RUN sudo apt install curl -y
-RUN curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh
-RUN chmod 500 nsolid_setup_deb.sh
-RUN ./nsolid_setup_deb.sh 21
-RUN sudo apt install -y gconf-service libgbm-dev libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
-RUN apt-get install nodejs -y
-
-RUN sudo npm install 
-
-COPY . .
+RUN ["npm", "install"]
+COPY src ./src
 EXPOSE 3000
 CMD ["npm", "start"]

@@ -1,20 +1,20 @@
 services:
-  web:
-    build: ./forntend
+  cv-web:
+    build: ./frontend
     restart: unless-stopped
     labels:
       - traefik.enable=true
-      - traefik.http.routers.abnaibi-web-route.rule=Host(`cv.ddldlabs.com.ng`)
-      - traefik.http.routers.abnaibi-web-route.tls=true
-      - traefik.http.routers.abnaibi-web-route.tls.certresolver=myresolver
-      - traefik.http.routers.abnaibi-web-route.middlewares=https-redirect@docker
-      - traefik.http.services.abnaibi.loadbalancer.server.port=80
-      - traefik.http.routers.abnaibi-web-http-to-https.rule=Host(`cv.ddldlabs.com.ng`)
-      - traefik.http.routers.abnaibi-web-http-to-https.entrypoints=web
-      - traefik.http.routers.abnaibi-web-http-to-https.middlewares=https-redirect
+      - traefik.http.routers.cv-web-route.rule=Host(`cv.ddldlabs.com.ng`)
+      - traefik.http.routers.cv-web-route.tls=true
+      - traefik.http.routers.cv-web-route.tls.certresolver=myresolver
+      - traefik.http.routers.cv-web-route.middlewares=https-redirect@docker
+      - traefik.http.services.cv-web.loadbalancer.server.port=80
+      - traefik.http.routers.cv-web-http-to-https.rule=Host(`cv.ddldlabs.com.ng`)
+      - traefik.http.routers.cv-web-http-to-https.entrypoints=web
+      - traefik.http.routers.cv-web-http-to-https.middlewares=https-redirect
     networks:
       - ddld-net
-  api:
+  cv-api:
     restart: always
     build: ./backend
     volumes:
@@ -24,16 +24,16 @@ services:
       MONGO_URI: "${MONGO_URI}"
     labels:
       - traefik.enable=true
-      - traefik.http.routers.abnaibi-web-route.rule=Host(`api.cv.ddldlabs.com.ng`)
-      - traefik.http.routers.abnaibi-web-route.tls=true
-      - traefik.http.routers.abnaibi-web-route.tls.certresolver=myresolver
-      - traefik.http.routers.abnaibi-web-route.middlewares=https-redirect@docker
-      - traefik.http.services.abnaibi.loadbalancer.server.port=3000
-      - traefik.http.routers.abnaibi-web-http-to-https.rule=Host(`api.cv.ddldlabs.com.ng`)
-      - traefik.http.routers.abnaibi-web-http-to-https.entrypoints=web
-      - traefik.http.routers.abnaibi-web-http-to-https.middlewares=https-redirect
+      - traefik.http.routers.cv-api-route.rule=Host(`api.cv.ddldlabs.com.ng`)
+      - traefik.http.routers.cv-api-route.tls=true
+      - traefik.http.routers.cv-api-route.tls.certresolver=myresolver
+      - traefik.http.routers.cv-api-route.middlewares=https-redirect@docker
+      - traefik.http.services.cv-api.loadbalancer.server.port=3000
+      - traefik.http.routers.cv-api-http-to-https.rule=Host(`api.cv.ddldlabs.com.ng`)
+      - traefik.http.routers.cv-api-http-to-https.entrypoints=web
+      - traefik.http.routers.cv-api-http-to-https.middlewares=https-redirect
     networks:
       - ddld-net
 networks:
-  ujere_net:
-    driver: bridge
+  ddld-net:
+    external: true
