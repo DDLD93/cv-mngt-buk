@@ -60,9 +60,9 @@ function Document() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      {/* <MDBox mt={0}>
+      <MDBox mt={0}>
         {isForm ? <StepperHorizotal /> : <TransitionsModal setIsForm={setIsForm} />}
-      </MDBox> */}
+      </MDBox>
       <Footer />
     </DashboardLayout>
   );
